@@ -451,11 +451,11 @@
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
                         <label class="text-sm font-semibold text-slate-600 mb-2 block">Tidur</label>
-                        <input type="time" id="sleep-start" class="input-luxury" value="22:00">
+                        <input type="time" id="sleep-start" title="Waktu Mulai Tidur" class="input-luxury" value="22:00">
                     </div>
                     <div>
                         <label class="text-sm font-semibold text-slate-600 mb-2 block">Bangun</label>
-                        <input type="time" id="sleep-end" class="input-luxury" value="04:00">
+                        <input type="time" id="sleep-end" title="Waktu Bangun Tidur" class="input-luxury" value="04:00">
                     </div>
                 </div>
                 <button onclick="calculateSleep()" class="btn-secondary w-full">Hitung Durasi Tidur</button>
@@ -692,7 +692,7 @@
                     Punya ide brilian atau menemukan celah? Kami sangat menghargai masukan Anda!
                     Jangan ragu untuk berbagi pemikiran, saran, atau pertanyaan Anda.
                 </p>
-                <a href="https://talk.visualcodepo.my.id/" target="_blank" class="btn-primary inline-flex items-center">
+                <a href="https://talk.visualcodepo.my.id/" target="_blank" rel="noopener" class="btn-primary inline-flex items-center">
                     <i class="fas fa-paper-plane mr-2"></i> Kirim Pesan kepada Kami
                 </a>
             </div>
@@ -890,7 +890,7 @@
                 <div class="flex items-center justify-between py-2">
                     <span class="font-medium">Mode Gelap</span>
                     <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="dark-mode-toggle" class="sr-only peer">
+                        <input type="checkbox" id="dark-mode-toggle" class="sr-only peer" title="Aktifkan Mode Gelap">
                         <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-700"></div>
                     </label>
                 </div>
