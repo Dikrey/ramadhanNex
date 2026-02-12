@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramadan Nexus Elite - Premium Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/index.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-pattern"></div>
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+    <div class="floating-orb orb-3"></div>
+    
+    <!-- Prayer Time Notification -->
+    <div id="prayer-notification-container" class="prayer-notification-container">
+        <div class="prayer-notification-content">
+            <i id="prayer-notification-icon" class="fas fa-bell"></i>
+            <span id="prayer-notification-text">Waktu Sholat Dzuhur akan segera tiba!</span>
+        </div>
+        <button onclick="closePrayerNotification()" class="prayer-notification-close">&times;</button>
+    </div>
+
+    <!-- Particles -->
+    <div class="particles-container" id="particles"></div>
+
+    <!-- Header -->
+    <header class="p-6 max-w-2xl mx-auto relative z-10">
+        <div class="flex justify-between items-start">
+            <div class="fade-in" style="animation-delay: 0.1s;">
+                <p id="greeting" class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-1">SELAMAT PAGI</p>
+                <h1 class="text-2xl font-black">
+                    <span class="text-gradient-gold">Ramadan</span><span class="text-slate-800">Nexus</span>
+                </h1>
+                <p id="hijri-date" class="text-sm text-slate-500 mt-1 font-medium">Ramadan 1446 H</p>
+            </div>
+            <div class="flex items-center gap-3 fade-in" style="animation-delay: 0.2s;">
+                <button onclick="openSettings()" title="Buka Pengaturan" class="w-12 h-12 glass-card flex items-center justify-center text-slate-500 hover:text-slate-800 transition-all">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <div class="glass-card px-4 py-2 flex items-center gap-2">
+                    <i id="streak-icon" class="fas fa-fire text-2xl text-slate-300"></i>
+                    <span id="streak-count" class="text-xl font-black">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-2xl mx-auto px-6 pb-40 relative z-10">
+        
+        <!-- HOME SECTION -->
+        <section id="section-home" class="space-y-6">
+            <!-- Clock Card -->
+            <div class="glass-card glass-card-strong p-8 text-center relative overflow-hidden slide-up" style="animation-delay: 0.3s;">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-50"></div>
+                <div class="flex items-center justify-center gap-2 mb-4">
+                    <div class="pulse-dot"></div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Waktu Sekarang</span>
+                </div>
+                <h2 id="clock" class="clock-display">00:00:00</h2>
+                <p id="countdown" class="text-lg font-semibold text-gradient-gold mt-2">Menuju Waktu</p>
+                <p id="maghrib-countdown" class="text-md font-semibold text-rose-500 mt-1">Menuju Maghrib: --:--:--</p>
+                <div id="ramadan-progress" class="mt-6">
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-slate-500 font-medium">Progress Ramadan</span>
+                        <span id="ramadan-day" class="font-bold text-slate-700">Hari 1/30</span>
+                    </div>
+                    <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
+                        <div id="ramadan-bar" class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Activity Chart -->
+            <div class="glass-card p-6 slide-up" style="animation-delay: 0.4s;">
+                <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-chart-line text-emerald-500"></i>
+                    Aktivitas Mingguan
+                </h3>
+                <div class="chart-container h-48">
+                    <canvas id="home-weekly-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-4 gap-3 slide-up" style="animation-delay: 0.5s;">
+                <button onclick="showTab('quran')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-500 flex items-center justify-center text-white text-xl">
+                        <i class="fas fa-book-quran"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-600">Quran</span>
+                </button>
+                <button onclick="showTab('dzikir')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center text-white text-xl">
+                        <i class="fas fa-hands-praying"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-600">Dzikir</span>
+                </button>
+                <button onclick="showTab('journal')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-400 to-rose-500 flex items-center justify-center text-white text-xl">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-600">Journal</span>
+                </button>
+                <button onclick="showTab('achievements')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform relative">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-400 to-violet-500 flex items-center justify-center text-white text-xl">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-600">Badges</span>
+                    <span id="new-badge-indicator" class="notification-badge hidden">!</span>
+                </button>
+            </div>
+
+            <!-- Prayer Times -->
+            <div class="slide-up" style="animation-delay: 0.6s;">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-slate-700">Jadwal Sholat</h3>
+                    <button onclick="showTab('prayer-settings')" class="text-xs font-semibold text-amber-600 hover:text-amber-700 transition-colors">
+                        <i class="fas fa-location-dot mr-1"></i> Lokasi
+                    </button>
+                </div>
+                <div class="grid grid-cols-3 gap-3" id="prayer-grid">
+                    <!-- Prayer cards will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Community Goals -->
+            <div class="glass-card p-6 slide-up" style="animation-delay: 0.7s;">
+                <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-users text-cyan-500"></i>
+                    Target Komunitas
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-slate-700">Khatam Bersama</span>
+                            <span class="text-sm text-emerald-600 font-bold">23% Selesai</span>
+                        </div>
+                        <div class="h-2 bg-white rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full" style="width: 23%"></div>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">1,234 peserta sedang bersama-sama mengkhatamkan Quran</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-slate-700">Sedekah Terkumpul</span>
+                            <span class="text-sm text-amber-600 font-bold">Rp 12.5 Juta</span>
+                        </div>
+                        <p class="text-xs text-slate-500">Dari 456 kontributor bulan ini</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Quote -->
+            <div class="quote-card slide-up" style="animation-delay: 0.8s;">
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-quote-left text-amber-600"></i>
+                    </div>
+                    <div>
+                        <p id="daily-quote" class="text-slate-700 font-medium italic">"Barangsiapa yang menghidupkan bulan Ramadan dengan iman dan mengharap pahala, maka diampunilah dosa-dosanya yang telah lalu."</p>
+                        <p id="quote-source" class="text-sm text-slate-500 mt-2 font-semibold">- HR. Bukhari & Muslim</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personalized Plan -->
+            <div class="glass-card p-6 slide-up" style="animation-delay: 0.9s;">
+                <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-tasks text-violet-500"></i>
+                    Rencana Ibadah Harian
+                </h3>
+                <div id="daily-plan-list" class="space-y-3">
+                    <!-- Daily plan items will be rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ARTICLES SECTION -->
+        <section id="section-articles" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6">
+                <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-newspaper text-teal-500"></i>
+                    Artikel & Berita Islami
+                </h3>
+                <div id="article-list" class="space-y-4">
+                    <!-- Articles will be rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- QURAN SECTION -->
+        <section id="section-quran" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6">
+                <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-book-quran text-emerald-500"></i>
+                    Target Baca Quran
+                </h3>
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="relative">
+                        <svg class="progress-ring w-24 h-24">
+                            <circle cx="48" cy="48" r="44" stroke="#e2e8f0" stroke-width="6" fill="transparent" />
+                            <circle id="quran-ring" cx="48" cy="48" r="44" stroke="#2d8a6e" stroke-width="6" fill="transparent" 
+                                stroke-dasharray="276.46" stroke-dashoffset="276.46" stroke-linecap="round" class="progress-ring-circle" />
+                        </svg>
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+                            <span id="quran-juz" class="text-xl font-black text-slate-800">0</span>
+                            <p class="text-[10px] text-slate-500">Juz</p>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm text-slate-500 mb-2">Hari ini</p>
+                        <input type="number" id="quran-pages-input" placeholder="Halaman dibaca" class="input-luxury mb-2" min="0" max="604">
+                        <button onclick="addQuranPages()" class="btn-secondary w-full text-sm">Tambah Progress</button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-emerald-50 rounded-2xl p-4">
+                        <p id="quran-total-pages" class="text-2xl font-black text-emerald-600">0</p>
+                        <p class="text-xs text-slate-500">Total Halaman</p>
+                    </div>
+                    <div class="bg-amber-50 rounded-2xl p-4">
+                        <p id="quran-khatam-percent" class="text-2xl font-black text-amber-600">0%</p>
+                        <p class="text-xs text-slate-500">Menuju Khatam</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Bookmark Surat</h3>
+                <div id="quran-bookmarks" class="space-y-3">
+                    <!-- Bookmarks rendered here -->
+                </div>
+                <button onclick="addQuranBookmark()" class="w-full mt-4 py-3 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 font-semibold hover:border-amber-400 hover:text-amber-600 transition-all">
+                    <i class="fas fa-plus mr-2"></i> Tambah Bookmark
+                </button>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Ayat Favorit</h3>
+                <div id="favorite-verses" class="space-y-3">
+                    <!-- Favorite verses here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- DZIKIR SECTION -->
+        <section id="section-dzikir" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-8 text-center">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Tasbih Digital</h3>
+                <div class="relative inline-block mb-8">
+                    <svg class="w-44 h-44 transform -rotate-90">
+                        <circle cx="88" cy="88" r="82" stroke="#e2e8f0" stroke-width="8" fill="transparent" />
+                        <circle id="tasbih-circle" cx="88" cy="88" r="82" stroke="#2d8a6e" stroke-width="8" fill="transparent" 
+                            stroke-dasharray="515.22" stroke-dashoffset="515.22" stroke-linecap="round" class="transition-all duration-300" />
+                    </svg>
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                        <div id="tasbih-val" class="text-4xl font-black text-slate-800">0</div>
+                        <div class="text-sm text-slate-500" id="tasbih-round">Ronde 1</div>
+                    </div>
+                </div>
+                <div class="flex gap-4 justify-center items-center">
+                    <button onclick="resetTasbih()" title="Reset Hitungan" class="w-16 h-16 glass-card text-slate-500 rounded-2xl text-xl hover:bg-slate-100 transition-all">
+                        <i class="fas fa-rotate-left"></i>
+                    </button>
+                    <button onclick="actionTasbih()" class="tasbih-btn">
+                        <span class="relative z-10">TAP</span>
+                    </button>
+                    <button onclick="setTasbihTarget()" title="Atur Target Dzikir" class="w-16 h-16 glass-card text-slate-500 rounded-2xl text-xl hover:bg-slate-100 transition-all">
+                        <i class="fas fa-bullseye"></i>
+                    </button>
+                </div>
+                <div class="mt-6 flex justify-center gap-3">
+                    <button onclick="setDzikirType('subhanallah')" class="tab-pill active" id="dzikir-subhanallah">Subhanallah (33x)</button>
+                    <button onclick="setDzikirType('alhamdulillah')" class="tab-pill" id="dzikir-alhamdulillah">Alhamdulillah (33x)</button>
+                    <button onclick="setDzikirType('allahuakbar')" class="tab-pill" id="dzikir-allahuakbar">Allahuakbar (33x)</button>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Statistik Dzikir</h3>
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div class="bg-emerald-50 rounded-2xl p-4">
+                        <p id="dzikir-total" class="text-2xl font-black text-emerald-600">0</p>
+                        <p class="text-xs text-slate-500">Total Dzikir</p>
+                    </div>
+                    <div class="bg-amber-50 rounded-2xl p-4">
+                        <p id="dzikir-rounds" class="text-2xl font-black text-amber-600">0</p>
+                        <p class="text-xs text-slate-500">Ronde Selesai</p>
+                    </div>
+                    <div class="bg-rose-50 rounded-2xl p-4">
+                        <p id="dzikir-streak" class="text-2xl font-black text-rose-600">0</p>
+                        <p class="text-xs text-slate-500">Hari Berturut</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Dzikir Pagi & Sore</h3>
+                <div class="space-y-3" id="dzikir-list">
+                    <!-- Dzikir list rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- JOURNAL SECTION -->
+        <section id="section-journal" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-slate-700">Journal Ramadan</h3>
+                    <button onclick="openJournalModal()" class="btn-secondary text-sm py-2 px-4">
+                        <i class="fas fa-plus mr-1"></i> Tulis
+                    </button>
+                </div>
+                <div id="journal-entries" class="space-y-4 max-h-[400px] overflow-y-auto custom-scroll">
+                    <!-- Journal entries rendered here -->
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Refleksi Harian</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-sm font-semibold text-slate-600 mb-2 block">Bagaimana puasamu hari ini?</label>
+                        <div class="flex gap-2">
+                            <button onclick="setMood('sangat-baik')" class="mood-btn flex-1 py-3 glass-card text-center rounded-xl hover:bg-amber-50 transition-all" data-mood="sangat-baik">
+                                <span class="text-2xl">😊</span>
+                                <p class="text-xs mt-1">Sangat Baik</p>
+                            </button>
+                            <button onclick="setMood('baik')" class="mood-btn flex-1 py-3 glass-card text-center rounded-xl hover:bg-amber-50 transition-all" data-mood="baik">
+                                <span class="text-2xl">🙂</span>
+                                <p class="text-xs mt-1">Baik</p>
+                            </button>
+                            <button onclick="setMood('biasa')" class="mood-btn flex-1 py-3 glass-card text-center rounded-xl hover:bg-amber-50 transition-all" data-mood="biasa">
+                                <span class="text-2xl">😐</span>
+                                <p class="text-xs mt-1">Biasa</p>
+                            </button>
+                            <button onclick="setMood('kurang')" class="mood-btn flex-1 py-3 glass-card text-center rounded-xl hover:bg-amber-50 transition-all" data-mood="kurang">
+                                <span class="text-2xl">😔</span>
+                                <p class="text-xs mt-1">Kurang</p>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-slate-600 mb-2 block">Catatan Hari Ini</label>
+                        <textarea id="reflection-note" class="input-luxury h-24 resize-none" placeholder="Tulis refleksimu..."></textarea>
+                    </div>
+                    <button onclick="saveReflection()" class="btn-primary w-full">Simpan Refleksi</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACHIEVEMENTS SECTION -->
+        <section id="section-achievements" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6">
+                <h3 class="font-bold text-slate-700 mb-2">Pencapaian</h3>
+                <p class="text-sm text-slate-500 mb-6">Kumpulkan badge dengan menyelesaikan tantangan</p>
+                <div id="achievements-grid" class="grid grid-cols-4 gap-4">
+                    <!-- Achievements rendered here -->
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Level & XP</h3>
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center text-white text-2xl font-black" id="user-level">
+                        1
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="font-semibold text-slate-700">Level <span id="level-num">1</span></span>
+                            <span class="text-slate-500"><span id="current-xp">0</span>/<span id="next-xp">100</span> XP</span>
+                        </div>
+                        <div class="h-3 bg-slate-200 rounded-full overflow-hidden">
+                            <div id="xp-bar" class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-sm text-slate-500">
+                    <i class="fas fa-star text-amber-400 mr-1"></i>
+                    Selesaikan target untuk mendapatkan XP
+                </div>
+            </div>
+        </section>
+
+        <!-- TRACKER SECTION -->
+        <section id="section-tracker" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6">
+                <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-bullseye text-amber-500"></i>
+                    Target Ibadah Hari Ini
+                </h3>
+                <div class="space-y-3" id="target-list">
+                    <!-- Targets rendered here -->
+                </div>
+                <button onclick="saveTargets()" class="w-full mt-6 py-4 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white rounded-2xl font-bold hover:shadow-lg transition-all">
+                    <i class="fas fa-check mr-2"></i> Simpan Progress
+                </button>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Riwayat Target</h3>
+                <div class="chart-container">
+                    <canvas id="target-chart"></canvas>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Kalender Puasa</h3>
+                <div id="fasting-calendar" class="grid grid-cols-7 gap-2">
+                    <!-- Calendar rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TOOLS SECTION -->
+        <section id="section-tools" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6">
+                <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-calculator text-amber-500"></i>
+                    Kalkulator Zakat
+                </h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-sm font-semibold text-slate-600 mb-2 block">Total Kekayaan (Rp)</label>
+                        <input type="number" id="zakat-input" placeholder="Contoh: 100000000" class="input-luxury">
+                    </div>
+                    <div id="zakat-result" class="bg-amber-50 rounded-2xl p-4 hidden">
+                        <p class="text-sm text-slate-600 mb-1">Zakat yang harus dibayar:</p>
+                        <p id="zakat-amount" class="text-2xl font-black text-amber-600">Rp 0</p>
+                    </div>
+                    <div id="nisab-info" class="text-xs text-slate-500 bg-slate-50 rounded-xl p-3">
+                        <p><strong>Nisab:</strong> Setara 85 gram emas</p>
+                        <p><strong>Kadar Zakat:</strong> 2,5% dari harta</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-moon text-indigo-500"></i>
+                    Tracker Tidur
+                </h3>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="text-sm font-semibold text-slate-600 mb-2 block">Tidur</label>
+                        <input type="time" id="sleep-start" class="input-luxury" value="22:00">
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-slate-600 mb-2 block">Bangun</label>
+                        <input type="time" id="sleep-end" class="input-luxury" value="04:00">
+                    </div>
+                </div>
+                <button onclick="calculateSleep()" class="btn-secondary w-full">Hitung Durasi Tidur</button>
+                <div id="sleep-result" class="mt-4 text-center hidden">
+                    <p class="text-3xl font-black text-indigo-600" id="sleep-hours">0</p>
+                    <p class="text-sm text-slate-500">jam tidur</p>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-heart text-rose-500"></i>
+                    Sedekah Tracker
+                </h3>
+                <div class="flex gap-3 mb-4">
+                    <input type="number" id="sedekah-amount" placeholder="Jumlah (Rp)" class="input-luxury flex-1">
+                    <button onclick="addSedekah()" class="btn-primary py-3 px-6">Tambah</button>
+                </div>
+                <div class="bg-rose-50 rounded-2xl p-4">
+                    <p class="text-sm text-slate-600 mb-1">Total Sedekah Ramadan:</p>
+                    <p id="total-sedekah" class="text-2xl font-black text-rose-600">Rp 0</p>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-utensils text-orange-500"></i>
+                    Menu Sahur & Buka
+                </h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-sm font-semibold text-slate-600 mb-2 block">Menu Sahur</label>
+                        <textarea id="menu-sahur" class="input-luxury h-20 resize-none text-sm" placeholder="Menu sahur hari ini..."></textarea>
+                    </div>
+                    <div>
+                        <label class="text-sm font-semibold text-slate-600 mb-2 block">Menu Buka</label>
+                        <textarea id="menu-buka" class="input-luxury h-20 resize-none text-sm" placeholder="Menu buka hari ini..."></textarea>
+                    </div>
+                </div>
+                <button onclick="saveMenu()" class="btn-secondary w-full mt-4">Simpan Menu</button>
+            </div>
+        </section>
+
+        <!-- STATISTICS SECTION -->
+        <section id="section-stats" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Statistik Ibadah</h3>
+                <div class="flex gap-2 mb-6">
+                    <button onclick="setStatsPeriod('week')" class="tab-pill active" id="stats-week">Minggu Ini</button>
+                    <button onclick="setStatsPeriod('month')" class="tab-pill" id="stats-month">Bulan Ini</button>
+                    <button onclick="setStatsPeriod('all')" class="tab-pill" id="stats-all">Semua</button>
+                </div>
+                <div class="chart-container mb-6">
+                    <canvas id="main-stats-chart"></canvas>
+                </div>
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div class="bg-emerald-50 rounded-2xl p-4">
+                        <p id="stat-prayers" class="text-2xl font-black text-emerald-600">0</p>
+                        <p class="text-xs text-slate-500">Sholat Tepat Waktu</p>
+                    </div>
+                    <div class="bg-amber-50 rounded-2xl p-4">
+                        <p id="stat-quran" class="text-2xl font-black text-amber-600">0</p>
+                        <p class="text-xs text-slate-500">Halaman Quran</p>
+                    </div>
+                    <div class="bg-rose-50 rounded-2xl p-4">
+                        <p id="stat-streak" class="text-2xl font-black text-rose-600">0</p>
+                        <p class="text-xs text-slate-500">Hari Streak</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Grafik Mood</h3>
+                <div class="chart-container">
+                    <canvas id="mood-chart"></canvas>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Progress Mingguan</h3>
+                <div class="chart-container">
+                    <canvas id="weekly-chart"></canvas>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Ringkasan Ramadan</h3>
+                <div class="space-y-4" id="ramadan-summary">
+                    <!-- Summary cards -->
+                </div>
+            </div>
+        </section>
+
+        <!-- QIBLA SECTION -->
+        <section id="section-qibla" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6 text-center">
+                <div class="flex justify-center items-center mb-4">
+                    <i class="fas fa-kaaba text-amber-500 text-xl mr-2"></i>
+                    <h3 class="font-bold text-slate-700">Arah Kiblat</h3>
+                </div>
+                <div id="qibla-compass" class="qibla-compass-container mx-auto my-6">
+                    <div class="compass-dial">
+                        <div class="compass-rose"></div>
+                        <div class="compass-arrow-north"></div>
+                        <div id="qibla-indicator" class="qibla-indicator">
+                            <div class="qibla-indicator-icon">
+                                <i class="fas fa-kaaba"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p id="qibla-direction-text" class="text-lg font-bold text-gradient-gold mb-1">Mencari lokasi...</p>
+                <p id="qibla-degree" class="text-sm text-slate-500 mb-4"></p>
+                <button onclick="getQiblaDirection()" class="btn-primary mt-2">
+                    <i class="fas fa-location-arrow mr-2"></i> Kalibrasi Ulang
+                </button>
+            </div>
+        </section>
+
+        <!-- MORE FEATURES SECTION -->
+        <section id="section-more" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Fitur Lainnya</h3>
+                <div class="grid grid-cols-2 gap-3">
+                     <button onclick="showTab('articles')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-teal-500 flex items-center justify-center text-white mb-2">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <p class="font-semibold text-sm">Artikel Islami</p>
+                        <p class="text-xs text-slate-500">Bacaan harian</p>
+                    </button>
+                    <button onclick="showTab('dua')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center text-white mb-2">
+                            <i class="fas fa-hands"></i>
+                        </div>
+                        <p class="font-semibold text-sm">Doa Harian</p>
+                        <p class="text-xs text-slate-500">Kumpulan doa</p>
+                    </button>
+                    <button onclick="showTab('hadith')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-cyan-500 flex items-center justify-center text-white mb-2">
+                            <i class="fas fa-scroll"></i>
+                        </div>
+                        <p class="font-semibold text-sm">Hadits Harian</p>
+                        <p class="text-xs text-slate-500">Hadits pilihan</p>
+                    </button>
+                    <button onclick="showTab('qibla')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center text-white mb-2">
+                            <i class="fas fa-kaaba"></i>
+                        </div>
+                        <p class="font-semibold text-sm">Arah Kiblat</p>
+                        <p class="text-xs text-slate-500">Kompas kiblat</p>
+                    </button>
+                    <button onclick="showTab('names')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-400 to-rose-500 flex items-center justify-center text-white mb-2">
+                            <i class="fas fa-list-ol"></i>
+                        </div>
+                        <p class="font-semibold text-sm">Asmaul Husna</p>
+                        <p class="text-xs text-slate-500">99 nama Allah</p>
+                    </button>
+                    <button onclick="showTab('last10')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center text-white mb-2">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="font-semibold text-sm">10 Malam Terakhir</p>
+                        <p class="text-xs text-slate-500">Lailatul Qadr</p>
+                    </button>
+                    <button onclick="showTab('tarawih')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center text-white mb-2">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <p class="font-semibold text-sm">Target Tarawih</p>
+                        <p class="text-xs text-slate-500">Lacak rakaat</p>
+                    </button>
+                     <button onclick="showTab('about')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center text-white mb-2">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <p class="font-semibold text-sm">Tentang Kami</p>
+                        <p class="text-xs text-slate-500">Info Pengembang</p>
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Pengaturan Lanjutan</h3>
+                <div class="space-y-3">
+                    <button onclick="exportData()" class="w-full py-3 glass-card text-left px-4 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-between">
+                        <span class="font-medium text-sm">Export Data</span>
+                        <i class="fas fa-download text-slate-400"></i>
+                    </button>
+                    <button onclick="importData()" class="w-full py-3 glass-card text-left px-4 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-between">
+                        <span class="font-medium text-sm">Import Data</span>
+                        <i class="fas fa-upload text-slate-400"></i>
+                    </button>
+                    <button onclick="resetAllData()" class="w-full py-3 glass-card text-left px-4 rounded-xl hover:bg-rose-50 transition-all flex items-center justify-between text-rose-500">
+                        <span class="font-medium text-sm">Reset Semua Data</span>
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT DEVELOPER SECTION -->
+        <section id="section-about" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6 text-center">
+                <h3 class="font-bold text-slate-700 mb-4 flex items-center justify-center gap-2">
+                    <i class="fas fa-heart text-rose-500"></i>
+                    Tentang Pengembang
+                </h3>
+                <p class="text-slate-600 text-md mb-6 leading-relaxed">
+                    Aplikasi "Ramadan Nexus Elite" adalah buah karya kolaborasi penuh dedikasi,
+                    diciptakan dengan visi untuk memperkaya pengalaman ibadah dan spiritualitas Anda di bulan suci Ramadan.
+                    Kami percaya teknologi dapat menjadi jembatan menuju ketenangan dan produktivitas ibadah yang lebih baik.
+                </p>
+                <div class="flex items-center justify-center gap-4 mb-6">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-rose-400 flex items-center justify-center text-white text-3xl font-bold">
+                        R_O
+                    </div>
+                    <div>
+                        <p class="text-xl font-black text-gradient-gold">Raihan_official0307</p>
+                        <p class="text-sm text-slate-500">Lead Developer & Visioner</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center gap-4 mb-6">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 to-blue-400 flex items-center justify-center text-white text-3xl font-bold">
+                        VCP
+                    </div>
+                    <div>
+                        <p class="text-xl font-black text-gradient-emerald">Visualcodepo</p>
+                        <p class="text-sm text-slate-500">UI/UX & Creative Director</p>
+                    </div>
+                </div>
+                <p class="text-slate-600 text-md mb-6 leading-relaxed">
+                    Punya ide brilian atau menemukan celah? Kami sangat menghargai masukan Anda!
+                    Jangan ragu untuk berbagi pemikiran, saran, atau pertanyaan Anda.
+                </p>
+                <a href="https://talk.visualcodepo.my.id/" target="_blank" class="btn-primary inline-flex items-center">
+                    <i class="fas fa-paper-plane mr-2"></i> Kirim Pesan kepada Kami
+                </a>
+            </div>
+        </section>
+
+        <!-- DUA SECTION -->
+        <section id="section-dua" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Doa Harian</h3>
+                <div class="space-y-4" id="dua-list">
+                    <!-- Duas rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- HADITH SECTION -->
+        <section id="section-hadith" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Hadits Tentang Ramadan</h3>
+                <div class="space-y-4" id="hadith-list">
+                    <!-- Hadiths rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- NAMES OF ALLAH SECTION -->
+        <section id="section-names" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Asmaul Husna</h3>
+                <div class="grid grid-cols-3 gap-3" id="asmaul-husna-grid">
+                    <!-- Names rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- LAST 10 NIGHTS SECTION -->
+        <section id="section-last10" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6">
+                <h3 class="font-bold text-slate-700 mb-4">10 Malam Terakhir</h3>
+                <p class="text-sm text-slate-500 mb-4">Cari Lailatul Qadr di malam-malam ganjil</p>
+                <div class="space-y-3" id="last10-nights">
+                    <!-- Nights rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TARAWIH SECTION -->
+        <section id="section-tarawih" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Target Tarawih</h3>
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="relative">
+                        <svg class="progress-ring w-28 h-28">
+                            <circle cx="56" cy="56" r="52" stroke="#e2e8f0" stroke-width="6" fill="transparent" />
+                            <circle id="tarawih-ring" cx="56" cy="56" r="52" stroke="#3b82f6" stroke-width="6" fill="transparent" 
+                                stroke-dasharray="326.73" stroke-dashoffset="326.73" stroke-linecap="round" class="progress-ring-circle" />
+                        </svg>
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+                            <span id="tarawih-rakaat" class="text-xl font-black text-slate-800">0</span>
+                            <p class="text-[10px] text-slate-500">Rakaat</p>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm text-slate-500 mb-2">Rakaat hari ini</p>
+                        <div class="flex gap-2">
+                            <button onclick="addTarawih(-2)" title="Kurangi 2 Rakaat" class="w-10 h-10 glass-card rounded-xl text-slate-500">-2</button>
+                            <button onclick="addTarawih(2)" class="flex-1 btn-secondary py-2">+2 Rakaat</button>
+                            <button onclick="addTarawih(8)" title="Tambah 8 Rakaat" class="w-10 h-10 glass-card rounded-xl text-slate-500">+8</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-blue-50 rounded-2xl p-4">
+                        <p id="tarawih-total" class="text-2xl font-black text-blue-600">0</p>
+                        <p class="text-xs text-slate-500">Total Rakaat</p>
+                    </div>
+                    <div class="bg-indigo-50 rounded-2xl p-4">
+                        <p id="tarawih-days" class="text-2xl font-black text-indigo-600">0</p>
+                        <p class="text-xs text-slate-500">Hari Tarawih</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMMUNITY SECTION -->
+        <section id="section-community" class="hidden-section space-y-6">
+            <div class="glass-card glass-card-strong p-6">
+                <h3 class="font-bold text-slate-700 mb-4">Target Komunitas</h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-slate-700">Khatam Bersama</span>
+                            <span class="text-sm text-emerald-600 font-bold">23% Selesai</span>
+                        </div>
+                        <div class="h-2 bg-white rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full" style="width: 23%"></div>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">1,234 peserta sedang bersama-sama mengkhatamkan Quran</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-slate-700">Sedekah Terkumpul</span>
+                            <span class="text-sm text-amber-600 font-bold">Rp 12.5 Juta</span>
+                        </div>
+                        <p class="text-xs text-slate-500">Dari 456 kontributor bulan ini</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Floating Action Button -->
+    <button onclick="showQuickActions()" title="Aksi Cepat" class="fab">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i id="toast-icon" class="fas fa-check-circle text-emerald-500 text-lg"></i>
+        <span id="toast-message">Berhasil disimpan!</span>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-6 left-1/2 transform -translate-x-1/2 w-[90%] max-w-md nav-container p-2 z-50">
+        <div class="flex items-center justify-around">
+            <button onclick="showTab('home')" id="nav-home" class="nav-item active">
+                <i class="fas fa-home text-lg"></i>
+                <span class="text-[10px] font-bold mt-1 block">Beranda</span>
+            </button>
+            <button onclick="showTab('tracker')" id="nav-tracker" class="nav-item">
+                <i class="fas fa-bullseye text-lg"></i>
+                <span class="text-[10px] font-bold mt-1 block">Target</span>
+            </button>
+             <button onclick="showTab('articles')" id="nav-articles" class="nav-item">
+                <i class="fas fa-newspaper text-lg"></i>
+                <span class="text-[10px] font-bold mt-1 block">Artikel</span>
+            </button>
+            <button onclick="showTab('stats')" id="nav-stats" class="nav-item">
+                <i class="fas fa-chart-pie text-lg"></i>
+                <span class="text-[10px] font-bold mt-1 block">Statistik</span>
+            </button>
+            <button onclick="showTab('more')" id="nav-more" class="nav-item">
+                <i class="fas fa-ellipsis text-lg"></i>
+                <span class="text-[10px] font-bold mt-1 block">Lainnya</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Journal Modal -->
+    <div id="journal-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="font-bold text-lg mb-4">Tulis Journal</h3>
+            <textarea id="journal-text" class="input-luxury h-32 resize-none mb-4" placeholder="Bagaimana harimu?"></textarea>
+            <div class="flex gap-3">
+                <button onclick="closeJournalModal()" class="flex-1 btn-secondary">Batal</button>
+                <button onclick="saveJournal()" class="flex-1 btn-primary">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="font-bold text-lg mb-4">Pengaturan</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm font-semibold text-slate-600 mb-2 block">Nama</label>
+                    <input type="text" id="user-name" class="input-luxury" placeholder="Nama kamu">
+                </div>
+                <div>
+                    <label class="text-sm font-semibold text-slate-600 mb-2 block">Lokasi</label>
+                    <select id="user-location" class="input-luxury">
+                        <option value="jakarta">Jakarta</option>
+                        <option value="bandung">Bandung</option>
+                        <option value="surabaya">Surabaya</option>
+                        <option value="yogyakarta">Yogyakarta</option>
+                        <option value="medan">Medan</option>
+                    </select>
+                </div>
+                <div class="flex items-center justify-between py-2">
+                    <span class="font-medium">Notifikasi Sholat</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="prayer-notification" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                    </label>
+                </div>
+                <div class="flex items-center justify-between py-2">
+                    <span class="font-medium">Reminder Sahur</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="sahur-reminder" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                    </label>
+                </div>
+                <div class="flex items-center justify-between py-2">
+                    <span class="font-medium">Mode Gelap</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="dark-mode-toggle" class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-700"></div>
+                    </label>
+                </div>
+            </div>
+            <button onclick="saveSettings()" class="btn-primary w-full mt-6">Simpan Pengaturan</button>
+            <button onclick="closeSettings()" class="btn-secondary w-full mt-3">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Quick Actions Modal -->
+    <div id="quick-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="font-bold text-lg mb-4">Aksi Cepat</h3>
+            <div class="grid grid-cols-3 gap-3">
+                <button onclick="quickAction('quran-page')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                    <i class="fas fa-book-quran text-emerald-500 text-xl"></i>
+                    <span class="text-xs font-medium">+Quran</span>
+                </button>
+                <button onclick="quickAction('sedekah')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                    <i class="fas fa-heart text-rose-500 text-xl"></i>
+                    <span class="text-xs font-medium">+Sedekah</span>
+                </button>
+                <button onclick="quickAction('dzikir')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                    <i class="fas fa-hands-praying text-amber-500 text-xl"></i>
+                    <span class="text-xs font-medium">+Dzikir</span>
+                </button>
+                <button onclick="quickAction('water')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                    <i class="fas fa-droplet text-blue-500 text-xl"></i>
+                    <span class="text-xs font-medium">+Air</span>
+                </button>
+                <button onclick="quickAction('tarawih')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                    <i class="fas fa-moon text-indigo-500 text-xl"></i>
+                    <span class="text-xs font-medium">+Tarawih</span>
+                </button>
+                <button onclick="quickAction('journal')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                    <i class="fas fa-pen text-violet-500 text-xl"></i>
+                    <span class="text-xs font-medium">+Journal</span>
+                </button>
+            </div>
+            <button onclick="closeQuickModal()" class="btn-secondary w-full mt-6">Tutup</button>
+        </div>
+    </div>
+
+
+    <script src="js/servers.js"></script>
+</body>
+</html>
