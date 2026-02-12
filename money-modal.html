@@ -1,0 +1,64 @@
+<!-- Add Money Transaction Modal -->
+<div id="money-modal" class="modal-overlay">
+    <div class="modal-content max-w-md">
+        <h3 class="text-2xl font-black mb-2" id="money-modal-title">Tambah Pemasukan</h3>
+        <p class="text-sm text-slate-500 mb-6">Catat transaksi keuangan Anda</p>
+
+        <div class="space-y-4">
+            <!-- Amount -->
+            <div>
+                <label class="text-sm font-semibold text-slate-600 mb-2 block">Jumlah (Rp)</label>
+                <input type="number" id="money-amount" placeholder="0" class="input-luxury text-2xl font-bold">
+            </div>
+
+            <!-- Category -->
+            <div>
+                <label class="text-sm font-semibold text-slate-600 mb-2 block">Kategori</label>
+                <select id="money-category" class="input-luxury">
+                    <option value="">Pilih Kategori</option>
+                    <!-- Income categories -->
+                    <optgroup label="Pemasukan" id="income-categories">
+                        <option value="gaji">💰 Gaji</option>
+                        <option value="bonus">🎁 Bonus</option>
+                        <option value="hadiah">🎉 Hadiah</option>
+                        <option value="lainnya-income">💵 Lainnya</option>
+                    </optgroup>
+                    <!-- Expense categories -->
+                    <optgroup label="Pengeluaran" id="expense-categories">
+                        <option value="makanan">🍔 Makanan & Minuman</option>
+                        <option value="transport">🚗 Transportasi</option>
+                        <option value="sedekah">💝 Sedekah</option>
+                        <option value="zakat">🕌 Zakat</option>
+                        <option value="belanja">🛒 Belanja</option>
+                        <option value="tagihan">📱 Tagihan</option>
+                        <option value="kesehatan">⚕️ Kesehatan</option>
+                        <option value="pendidikan">📚 Pendidikan</option>
+                        <option value="hiburan">🎮 Hiburan</option>
+                        <option value="lainnya-expense">💸 Lainnya</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label class="text-sm font-semibold text-slate-600 mb-2 block">Keterangan (Opsional)</label>
+                <input type="text" id="money-description" placeholder="Contoh: Beli buku Ramadan" class="input-luxury">
+            </div>
+
+            <!-- Date -->
+            <div>
+                <label class="text-sm font-semibold text-slate-600 mb-2 block">Tanggal</label>
+                <input type="date" id="money-date" class="input-luxury">
+            </div>
+        </div>
+
+        <div class="flex gap-3 mt-6">
+            <button onclick="closeMoneyModal()" class="btn-secondary flex-1">
+                <i class="fas fa-times mr-2"></i>Batal
+            </button>
+            <button onclick="saveMoneyTransaction()" class="btn-primary flex-1" id="money-save-btn">
+                <i class="fas fa-save mr-2"></i>Simpan
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,13 +12,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles/index.css">
 </head>
+
 <body>
     <!-- Animated Background -->
     <div class="bg-pattern"></div>
     <div class="floating-orb orb-1"></div>
     <div class="floating-orb orb-2"></div>
     <div class="floating-orb orb-3"></div>
-    
+
     <!-- Prayer Time Notification -->
     <div id="prayer-notification-container" class="prayer-notification-container">
         <div class="prayer-notification-content">
@@ -34,14 +36,16 @@
     <header class="p-6 max-w-2xl mx-auto relative z-10">
         <div class="flex justify-between items-start">
             <div class="fade-in" style="animation-delay: 0.1s;">
-                <p id="greeting" class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-1">SELAMAT PAGI</p>
+                <p id="greeting" class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-1">SELAMAT PAGI
+                </p>
                 <h1 class="text-2xl font-black">
                     <span class="text-gradient-gold">Ramadan</span><span class="text-slate-800">Nexus</span>
                 </h1>
                 <p id="hijri-date" class="text-sm text-slate-500 mt-1 font-medium">Ramadan 1446 H</p>
             </div>
             <div class="flex items-center gap-3 fade-in" style="animation-delay: 0.2s;">
-                <button onclick="openSettings()" title="Buka Pengaturan" class="w-12 h-12 glass-card flex items-center justify-center text-slate-500 hover:text-slate-800 transition-all">
+                <button onclick="openSettings()" title="Buka Pengaturan"
+                    class="w-12 h-12 glass-card flex items-center justify-center text-slate-500 hover:text-slate-800 transition-all">
                     <i class="fas fa-cog"></i>
                 </button>
                 <div class="glass-card px-4 py-2 flex items-center gap-2">
@@ -54,26 +58,179 @@
 
     <!-- Main Content -->
     <main class="max-w-2xl mx-auto px-6 pb-40 relative z-10">
-        
+
         <!-- HOME SECTION -->
         <section id="section-home" class="space-y-6">
-            <!-- Clock Card -->
-            <div class="glass-card glass-card-strong p-8 text-center relative overflow-hidden slide-up" style="animation-delay: 0.3s;">
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-50"></div>
-                <div class="flex items-center justify-center gap-2 mb-4">
-                    <div class="pulse-dot"></div>
-                    <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Waktu Sekarang</span>
+            <!-- Ultra Modern Luxury Clock Card -->
+            <div class="luxury-clock-card glass-card-strong p-0 relative overflow-hidden slide-up"
+                style="animation-delay: 0.3s;">
+                <!-- Animated Background Gradient -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-br from-amber-400/20 via-rose-400/10 to-emerald-400/20 animate-gradient-shift">
                 </div>
-                <h2 id="clock" class="clock-display">00:00:00</h2>
-                <p id="countdown" class="text-lg font-semibold text-gradient-gold mt-2">Menuju Waktu</p>
-                <p id="maghrib-countdown" class="text-md font-semibold text-rose-500 mt-1">Menuju Maghrib: --:--:--</p>
-                <div id="ramadan-progress" class="mt-6">
-                    <div class="flex justify-between text-sm mb-2">
-                        <span class="text-slate-500 font-medium">Progress Ramadan</span>
-                        <span id="ramadan-day" class="font-bold text-slate-700">Hari 1/30</span>
+
+                <!-- Top Glow Line -->
+                <div
+                    class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-70 animate-pulse-slow">
+                </div>
+
+                <!-- Content Container -->
+                <div class="relative z-10 p-8">
+                    <!-- Header Badge -->
+                    <div class="flex items-center justify-center gap-2 mb-6">
+                        <div class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
+                        <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-slate-600 mx-2">Live Now</span>
+                        <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+                        <div class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
                     </div>
-                    <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
-                        <div id="ramadan-bar" class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-1000" style="width: 0%"></div>
+
+                    <!-- Main Clock Display -->
+                    <div class="relative mb-6">
+                        <div class="absolute inset-0 bg-gradient-to-r from-amber-400/20 to-rose-400/20 blur-3xl"></div>
+                        <h2 id="clock"
+                            class="clock-display relative z-10 bg-gradient-to-r from-amber-600 via-rose-500 to-amber-600 bg-clip-text text-transparent animate-gradient-x"
+                            style="font-size: 5rem; font-weight: 900; letter-spacing: -0.05em;">00:00:00</h2>
+                    </div>
+
+                    <!-- Greeting -->
+                    <p id="greeting" class="text-xl font-bold text-slate-700 mb-4">SELAMAT PAGI</p>
+
+                    <!-- Prayer Countdown Cards -->
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+                        <!-- Next Prayer -->
+                        <div class="glass-card p-4 border-l-4 border-amber-400 hover:scale-105 transition-transform">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-mosque text-amber-500"></i>
+                                <span class="text-xs font-semibold text-slate-500 uppercase">Selanjutnya</span>
+                            </div>
+                            <p id="countdown" class="text-sm font-bold text-gradient-gold">Menuju Waktu</p>
+                        </div>
+
+                        <!-- Maghrib Countdown -->
+                        <div class="glass-card p-4 border-l-4 border-rose-400 hover:scale-105 transition-transform">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-moon text-rose-500"></i>
+                                <span class="text-xs font-semibold text-slate-500 uppercase">Berbuka</span>
+                            </div>
+                            <p id="maghrib-countdown" class="text-sm font-bold text-rose-600">--:--:--</p>
+                        </div>
+                    </div>
+
+                    <!-- Ramadan Progress -->
+                    <div id="ramadan-progress" class="glass-card p-4">
+                        <div class="flex justify-between text-sm mb-3">
+                            <span class="text-slate-600 font-semibold flex items-center gap-2">
+                                <i class="fas fa-calendar-alt text-amber-500"></i>
+                                Progress Ramadan
+                            </span>
+                            <span id="ramadan-day" class="font-black text-gradient-gold">Hari 1/30</span>
+                        </div>
+                        <div class="h-3 bg-slate-200 rounded-full overflow-hidden relative">
+                            <div id="ramadan-bar"
+                                class="h-full bg-gradient-to-r from-amber-400 via-rose-400 to-amber-500 rounded-full transition-all duration-1000 relative"
+                                style="width: 0%">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between text-xs text-slate-500 mt-2">
+                            <span>Mulai</span>
+                            <span id="ramadan-percentage">0%</span>
+                            <span>Selesai</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Decorative Line -->
+                <div
+                    class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-rose-400 to-transparent opacity-50">
+                </div>
+            </div>
+
+            <!-- Streak Absensi Card -->
+            <div class="glass-card glass-card-strong p-8 text-center relative overflow-hidden slide-up"
+                style="animation-delay: 0.35s;">
+                <div
+                    class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-1 bg-gradient-to-r from-transparent via-rose-400 to-transparent opacity-50">
+                </div>
+
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <div class="pulse-dot bg-rose-500"></div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Streak Harian</span>
+                </div>
+
+                <div class="relative inline-block mb-6">
+                    <div class="streak-circle-container">
+                        <svg class="streak-circle-svg" width="180" height="180">
+                            <defs>
+                                <linearGradient id="streakGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:#f7931e;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#ffd700;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <circle cx="90" cy="90" r="75" stroke="#e2e8f0" stroke-width="8" fill="transparent" />
+                            <circle id="streak-progress-circle" cx="90" cy="90" r="75" stroke="url(#streakGradient)"
+                                stroke-width="8" fill="transparent" stroke-dasharray="471.24" stroke-dashoffset="471.24"
+                                stroke-linecap="round" class="progress-ring-circle" />
+                        </svg>
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+                            <div id="streak-display" class="text-6xl font-black mb-1">
+                                <span id="streak-number" class="text-gradient-gold">0</span>
+                            </div>
+                            <p class="text-sm text-slate-500 font-semibold">Hari Berturut</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <p class="text-sm font-semibold text-slate-600 mb-3">Bagaimana harimu?</p>
+                    <div class="flex justify-center gap-3">
+                        <button onclick="selectMoodAndAbsen('😊', 'sangat-baik')" class="mood-selector-btn"
+                            data-mood="😊" title="Sangat Baik">
+                            <span class="text-4xl">😊</span>
+                        </button>
+                        <button onclick="selectMoodAndAbsen('🙂', 'baik')" class="mood-selector-btn" data-mood="🙂"
+                            title="Baik">
+                            <span class="text-4xl">🙂</span>
+                        </button>
+                        <button onclick="selectMoodAndAbsen('😐', 'biasa')" class="mood-selector-btn" data-mood="😐"
+                            title="Biasa">
+                            <span class="text-4xl">😐</span>
+                        </button>
+                        <button onclick="selectMoodAndAbsen('😔', 'kurang')" class="mood-selector-btn" data-mood="😔"
+                            title="Kurang">
+                            <span class="text-4xl">😔</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button onclick="openStreakModal()" class="btn-primary w-full streak-absen-btn">
+                    <i class="fas fa-calendar-check mr-2"></i>
+                    <span id="streak-btn-text">Absen Hari Ini</span>
+                </button>
+
+                <div id="streak-status" class="mt-4 text-sm text-slate-500"></div>
+            </div>
+
+            <!-- Notification Center Card -->
+            <div class="glass-card p-6 slide-up" style="animation-delay: 0.38s;">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2">
+                        <i class="fas fa-bell text-amber-500"></i>
+                        Notifikasi
+                    </h3>
+                    <button onclick="clearAllNotifications()"
+                        class="text-xs text-slate-500 hover:text-rose-500 transition-colors">
+                        <i class="fas fa-trash-alt mr-1"></i>Hapus Semua
+                    </button>
+                </div>
+                <div id="notification-list" class="space-y-2 max-h-64 overflow-y-auto custom-scroll">
+                    <div class="text-center text-slate-400 py-8">
+                        <i class="fas fa-bell-slash text-4xl mb-2 opacity-50"></i>
+                        <p class="text-sm">Belum ada notifikasi</p>
                     </div>
                 </div>
             </div>
@@ -89,28 +246,53 @@
                 </div>
             </div>
 
+            <!-- Daily Progress -->
+            <div class="glass-card p-6 slide-up" style="animation-delay: 0.45s;">
+                <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-tasks text-violet-500"></i>
+                    Progress Harian
+                </h3>
+                <div class="text-center mb-4">
+                    <p class="text-5xl font-black text-gradient-gold" id="daily-progress-percent">0%</p>
+                    <p class="text-sm text-slate-500 mt-2" id="daily-progress-text">0 dari 8 target selesai</p>
+                </div>
+                <div class="h-3 bg-slate-200 rounded-full overflow-hidden">
+                    <div id="daily-progress-bar"
+                        class="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full transition-all duration-1000"
+                        style="width: 0%"></div>
+                </div>
+            </div>
+
             <!-- Quick Actions -->
             <div class="grid grid-cols-4 gap-3 slide-up" style="animation-delay: 0.5s;">
-                <button onclick="showTab('quran')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-500 flex items-center justify-center text-white text-xl">
+                <button onclick="showTab('quran')"
+                    class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-500 flex items-center justify-center text-white text-xl">
                         <i class="fas fa-book-quran"></i>
                     </div>
                     <span class="text-xs font-semibold text-slate-600">Quran</span>
                 </button>
-                <button onclick="showTab('dzikir')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center text-white text-xl">
+                <button onclick="showTab('dzikir')"
+                    class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center text-white text-xl">
                         <i class="fas fa-hands-praying"></i>
                     </div>
                     <span class="text-xs font-semibold text-slate-600">Dzikir</span>
                 </button>
-                <button onclick="showTab('journal')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-400 to-rose-500 flex items-center justify-center text-white text-xl">
+                <button onclick="showTab('journal')"
+                    class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-400 to-rose-500 flex items-center justify-center text-white text-xl">
                         <i class="fas fa-book-open"></i>
                     </div>
                     <span class="text-xs font-semibold text-slate-600">Journal</span>
                 </button>
-                <button onclick="showTab('achievements')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform relative">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-400 to-violet-500 flex items-center justify-center text-white text-xl">
+                <button onclick="showTab('achievements')"
+                    class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform relative">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-400 to-violet-500 flex items-center justify-center text-white text-xl">
                         <i class="fas fa-trophy"></i>
                     </div>
                     <span class="text-xs font-semibold text-slate-600">Badges</span>
@@ -122,7 +304,8 @@
             <div class="slide-up" style="animation-delay: 0.6s;">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="font-bold text-slate-700">Jadwal Sholat</h3>
-                    <button onclick="showTab('prayer-settings')" class="text-xs font-semibold text-amber-600 hover:text-amber-700 transition-colors">
+                    <button onclick="showTab('prayer-settings')"
+                        class="text-xs font-semibold text-amber-600 hover:text-amber-700 transition-colors">
                         <i class="fas fa-location-dot mr-1"></i> Lokasi
                     </button>
                 </div>
@@ -144,7 +327,8 @@
                             <span class="text-sm text-emerald-600 font-bold">23% Selesai</span>
                         </div>
                         <div class="h-2 bg-white rounded-full overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full" style="width: 23%"></div>
+                            <div class="h-full bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full"
+                                style="width: 23%"></div>
                         </div>
                         <p class="text-xs text-slate-500 mt-2">1,234 peserta sedang bersama-sama mengkhatamkan Quran</p>
                     </div>
@@ -165,8 +349,11 @@
                         <i class="fas fa-quote-left text-amber-600"></i>
                     </div>
                     <div>
-                        <p id="daily-quote" class="text-slate-700 font-medium italic">"Barangsiapa yang menghidupkan bulan Ramadan dengan iman dan mengharap pahala, maka diampunilah dosa-dosanya yang telah lalu."</p>
-                        <p id="quote-source" class="text-sm text-slate-500 mt-2 font-semibold">- HR. Bukhari & Muslim</p>
+                        <p id="daily-quote" class="text-slate-700 font-medium italic">"Barangsiapa yang menghidupkan
+                            bulan Ramadan dengan iman dan mengharap pahala, maka diampunilah dosa-dosanya yang telah
+                            lalu."</p>
+                        <p id="quote-source" class="text-sm text-slate-500 mt-2 font-semibold">- HR. Bukhari & Muslim
+                        </p>
                     </div>
                 </div>
             </div>
@@ -207,8 +394,9 @@
                     <div class="relative">
                         <svg class="progress-ring w-24 h-24">
                             <circle cx="48" cy="48" r="44" stroke="#e2e8f0" stroke-width="6" fill="transparent" />
-                            <circle id="quran-ring" cx="48" cy="48" r="44" stroke="#2d8a6e" stroke-width="6" fill="transparent" 
-                                stroke-dasharray="276.46" stroke-dashoffset="276.46" stroke-linecap="round" class="progress-ring-circle" />
+                            <circle id="quran-ring" cx="48" cy="48" r="44" stroke="#2d8a6e" stroke-width="6"
+                                fill="transparent" stroke-dasharray="276.46" stroke-dashoffset="276.46"
+                                stroke-linecap="round" class="progress-ring-circle" />
                         </svg>
                         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
                             <span id="quran-juz" class="text-xl font-black text-slate-800">0</span>
@@ -217,7 +405,8 @@
                     </div>
                     <div class="flex-1">
                         <p class="text-sm text-slate-500 mb-2">Hari ini</p>
-                        <input type="number" id="quran-pages-input" placeholder="Halaman dibaca" class="input-luxury mb-2" min="0" max="604">
+                        <input type="number" id="quran-pages-input" placeholder="Halaman dibaca"
+                            class="input-luxury mb-2" min="0" max="604">
                         <button onclick="addQuranPages()" class="btn-secondary w-full text-sm">Tambah Progress</button>
                     </div>
                 </div>
@@ -238,7 +427,8 @@
                 <div id="quran-bookmarks" class="space-y-3">
                     <!-- Bookmarks rendered here -->
                 </div>
-                <button onclick="addQuranBookmark()" class="w-full mt-4 py-3 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 font-semibold hover:border-amber-400 hover:text-amber-600 transition-all">
+                <button onclick="addQuranBookmark()"
+                    class="w-full mt-4 py-3 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 font-semibold hover:border-amber-400 hover:text-amber-600 transition-all">
                     <i class="fas fa-plus mr-2"></i> Tambah Bookmark
                 </button>
             </div>
@@ -258,8 +448,9 @@
                 <div class="relative inline-block mb-8">
                     <svg class="w-44 h-44 transform -rotate-90">
                         <circle cx="88" cy="88" r="82" stroke="#e2e8f0" stroke-width="8" fill="transparent" />
-                        <circle id="tasbih-circle" cx="88" cy="88" r="82" stroke="#2d8a6e" stroke-width="8" fill="transparent" 
-                            stroke-dasharray="515.22" stroke-dashoffset="515.22" stroke-linecap="round" class="transition-all duration-300" />
+                        <circle id="tasbih-circle" cx="88" cy="88" r="82" stroke="#2d8a6e" stroke-width="8"
+                            fill="transparent" stroke-dasharray="515.22" stroke-dashoffset="515.22"
+                            stroke-linecap="round" class="transition-all duration-300" />
                     </svg>
                     <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
                         <div id="tasbih-val" class="text-4xl font-black text-slate-800">0</div>
@@ -267,20 +458,25 @@
                     </div>
                 </div>
                 <div class="flex gap-4 justify-center items-center">
-                    <button onclick="resetTasbih()" title="Reset Hitungan" class="w-16 h-16 glass-card text-slate-500 rounded-2xl text-xl hover:bg-slate-100 transition-all">
+                    <button onclick="resetTasbih()" title="Reset Hitungan"
+                        class="w-16 h-16 glass-card text-slate-500 rounded-2xl text-xl hover:bg-slate-100 transition-all">
                         <i class="fas fa-rotate-left"></i>
                     </button>
                     <button onclick="actionTasbih()" class="tasbih-btn">
                         <span class="relative z-10">TAP</span>
                     </button>
-                    <button onclick="setTasbihTarget()" title="Atur Target Dzikir" class="w-16 h-16 glass-card text-slate-500 rounded-2xl text-xl hover:bg-slate-100 transition-all">
+                    <button onclick="setTasbihTarget()" title="Atur Target Dzikir"
+                        class="w-16 h-16 glass-card text-slate-500 rounded-2xl text-xl hover:bg-slate-100 transition-all">
                         <i class="fas fa-bullseye"></i>
                     </button>
                 </div>
                 <div class="mt-6 flex justify-center gap-3">
-                    <button onclick="setDzikirType('subhanallah')" class="tab-pill active" id="dzikir-subhanallah">Subhanallah (33x)</button>
-                    <button onclick="setDzikirType('alhamdulillah')" class="tab-pill" id="dzikir-alhamdulillah">Alhamdulillah (33x)</button>
-                    <button onclick="setDzikirType('allahuakbar')" class="tab-pill" id="dzikir-allahuakbar">Allahuakbar (33x)</button>
+                    <button onclick="setDzikirType('subhanallah')" class="tab-pill active"
+                        id="dzikir-subhanallah">Subhanallah (33x)</button>
+                    <button onclick="setDzikirType('alhamdulillah')" class="tab-pill"
+                        id="dzikir-alhamdulillah">Alhamdulillah (33x)</button>
+                    <button onclick="setDzikirType('allahuakbar')" class="tab-pill" id="dzikir-allahuakbar">Allahuakbar
+                        (33x)</button>
                 </div>
             </div>
 
@@ -328,21 +524,30 @@
                 <h3 class="font-bold text-slate-700 mb-4">Refleksi Harian</h3>
                 <div class="space-y-4">
                     <div>
-                        <label class="text-sm font-semibold text-slate-600 mb-2 block">Bagaimana puasamu hari ini?</label>
+                        <label class="text-sm font-semibold text-slate-600 mb-2 block">Bagaimana puasamu hari
+                            ini?</label>
                         <div class="flex gap-2">
-                            <button onclick="setMood('sangat-baik')" class="mood-btn flex-1 py-3 glass-card text-center rounded-xl hover:bg-amber-50 transition-all" data-mood="sangat-baik">
+                            <button onclick="setMood('sangat-baik')"
+                                class="mood-btn flex-1 py-3 glass-card text-center rounded-xl hover:bg-amber-50 transition-all"
+                                data-mood="sangat-baik">
                                 <span class="text-2xl">😊</span>
                                 <p class="text-xs mt-1">Sangat Baik</p>
                             </button>
-                            <button onclick="setMood('baik')" class="mood-btn flex-1 py-3 glass-card text-center rounded-xl hover:bg-amber-50 transition-all" data-mood="baik">
+                            <button onclick="setMood('baik')"
+                                class="mood-btn flex-1 py-3 glass-card text-center rounded-xl hover:bg-amber-50 transition-all"
+                                data-mood="baik">
                                 <span class="text-2xl">🙂</span>
                                 <p class="text-xs mt-1">Baik</p>
                             </button>
-                            <button onclick="setMood('biasa')" class="mood-btn flex-1 py-3 glass-card text-center rounded-xl hover:bg-amber-50 transition-all" data-mood="biasa">
+                            <button onclick="setMood('biasa')"
+                                class="mood-btn flex-1 py-3 glass-card text-center rounded-xl hover:bg-amber-50 transition-all"
+                                data-mood="biasa">
                                 <span class="text-2xl">😐</span>
                                 <p class="text-xs mt-1">Biasa</p>
                             </button>
-                            <button onclick="setMood('kurang')" class="mood-btn flex-1 py-3 glass-card text-center rounded-xl hover:bg-amber-50 transition-all" data-mood="kurang">
+                            <button onclick="setMood('kurang')"
+                                class="mood-btn flex-1 py-3 glass-card text-center rounded-xl hover:bg-amber-50 transition-all"
+                                data-mood="kurang">
                                 <span class="text-2xl">😔</span>
                                 <p class="text-xs mt-1">Kurang</p>
                             </button>
@@ -350,7 +555,8 @@
                     </div>
                     <div>
                         <label class="text-sm font-semibold text-slate-600 mb-2 block">Catatan Hari Ini</label>
-                        <textarea id="reflection-note" class="input-luxury h-24 resize-none" placeholder="Tulis refleksimu..."></textarea>
+                        <textarea id="reflection-note" class="input-luxury h-24 resize-none"
+                            placeholder="Tulis refleksimu..."></textarea>
                     </div>
                     <button onclick="saveReflection()" class="btn-primary w-full">Simpan Refleksi</button>
                 </div>
@@ -370,16 +576,20 @@
             <div class="glass-card p-6">
                 <h3 class="font-bold text-slate-700 mb-4">Level & XP</h3>
                 <div class="flex items-center gap-4 mb-4">
-                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center text-white text-2xl font-black" id="user-level">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center text-white text-2xl font-black"
+                        id="user-level">
                         1
                     </div>
                     <div class="flex-1">
                         <div class="flex justify-between text-sm mb-1">
                             <span class="font-semibold text-slate-700">Level <span id="level-num">1</span></span>
-                            <span class="text-slate-500"><span id="current-xp">0</span>/<span id="next-xp">100</span> XP</span>
+                            <span class="text-slate-500"><span id="current-xp">0</span>/<span id="next-xp">100</span>
+                                XP</span>
                         </div>
                         <div class="h-3 bg-slate-200 rounded-full overflow-hidden">
-                            <div id="xp-bar" class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            <div id="xp-bar"
+                                class="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-500"
+                                style="width: 0%"></div>
                         </div>
                     </div>
                 </div>
@@ -400,7 +610,8 @@
                 <div class="space-y-3" id="target-list">
                     <!-- Targets rendered here -->
                 </div>
-                <button onclick="saveTargets()" class="w-full mt-6 py-4 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white rounded-2xl font-bold hover:shadow-lg transition-all">
+                <button onclick="saveTargets()"
+                    class="w-full mt-6 py-4 bg-gradient-to-r from-emerald-400 to-emerald-500 text-white rounded-2xl font-bold hover:shadow-lg transition-all">
                     <i class="fas fa-check mr-2"></i> Simpan Progress
                 </button>
             </div>
@@ -445,13 +656,35 @@
 
             <div class="glass-card p-6">
                 <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-droplet text-blue-500"></i>
+                    Tracker Minum Air
+                </h3>
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <p class="text-sm text-slate-500">Target Harian</p>
+                        <p class="text-2xl font-black text-blue-600" id="water-ml">0 ml</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-slate-500">Progress</p>
+                        <p class="text-2xl font-black text-blue-600" id="water-count">0/8</p>
+                    </div>
+                </div>
+                <div class="flex justify-center gap-2 flex-wrap" id="water-drops">
+                    <!-- Water drops will be rendered here -->
+                </div>
+                <p class="text-xs text-slate-500 text-center mt-4">Klik untuk menandai gelas yang sudah diminum</p>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
                     <i class="fas fa-moon text-indigo-500"></i>
                     Tracker Tidur
                 </h3>
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
                         <label class="text-sm font-semibold text-slate-600 mb-2 block">Tidur</label>
-                        <input type="time" id="sleep-start" title="Waktu Mulai Tidur" class="input-luxury" value="22:00">
+                        <input type="time" id="sleep-start" title="Waktu Mulai Tidur" class="input-luxury"
+                            value="22:00">
                     </div>
                     <div>
                         <label class="text-sm font-semibold text-slate-600 mb-2 block">Bangun</label>
@@ -488,11 +721,13 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="text-sm font-semibold text-slate-600 mb-2 block">Menu Sahur</label>
-                        <textarea id="menu-sahur" class="input-luxury h-20 resize-none text-sm" placeholder="Menu sahur hari ini..."></textarea>
+                        <textarea id="menu-sahur" class="input-luxury h-20 resize-none text-sm"
+                            placeholder="Menu sahur hari ini..."></textarea>
                     </div>
                     <div>
                         <label class="text-sm font-semibold text-slate-600 mb-2 block">Menu Buka</label>
-                        <textarea id="menu-buka" class="input-luxury h-20 resize-none text-sm" placeholder="Menu buka hari ini..."></textarea>
+                        <textarea id="menu-buka" class="input-luxury h-20 resize-none text-sm"
+                            placeholder="Menu buka hari ini..."></textarea>
                     </div>
                 </div>
                 <button onclick="saveMenu()" class="btn-secondary w-full mt-4">Simpan Menu</button>
@@ -580,57 +815,73 @@
             <div class="glass-card glass-card-strong p-6">
                 <h3 class="font-bold text-slate-700 mb-4">Fitur Lainnya</h3>
                 <div class="grid grid-cols-2 gap-3">
-                     <button onclick="showTab('articles')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-teal-500 flex items-center justify-center text-white mb-2">
+                    <button onclick="showTab('articles')"
+                        class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-teal-500 flex items-center justify-center text-white mb-2">
                             <i class="fas fa-newspaper"></i>
                         </div>
                         <p class="font-semibold text-sm">Artikel Islami</p>
                         <p class="text-xs text-slate-500">Bacaan harian</p>
                     </button>
-                    <button onclick="showTab('dua')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center text-white mb-2">
+                    <button onclick="showTab('dua')"
+                        class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center text-white mb-2">
                             <i class="fas fa-hands"></i>
                         </div>
                         <p class="font-semibold text-sm">Doa Harian</p>
                         <p class="text-xs text-slate-500">Kumpulan doa</p>
                     </button>
-                    <button onclick="showTab('hadith')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-cyan-500 flex items-center justify-center text-white mb-2">
+                    <button onclick="showTab('hadith')"
+                        class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-cyan-500 flex items-center justify-center text-white mb-2">
                             <i class="fas fa-scroll"></i>
                         </div>
                         <p class="font-semibold text-sm">Hadits Harian</p>
                         <p class="text-xs text-slate-500">Hadits pilihan</p>
                     </button>
-                    <button onclick="showTab('qibla')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center text-white mb-2">
+                    <button onclick="showTab('qibla')"
+                        class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-400 to-indigo-500 flex items-center justify-center text-white mb-2">
                             <i class="fas fa-kaaba"></i>
                         </div>
                         <p class="font-semibold text-sm">Arah Kiblat</p>
                         <p class="text-xs text-slate-500">Kompas kiblat</p>
                     </button>
-                    <button onclick="showTab('names')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-400 to-rose-500 flex items-center justify-center text-white mb-2">
+                    <button onclick="showTab('names')"
+                        class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-400 to-rose-500 flex items-center justify-center text-white mb-2">
                             <i class="fas fa-list-ol"></i>
                         </div>
                         <p class="font-semibold text-sm">Asmaul Husna</p>
                         <p class="text-xs text-slate-500">99 nama Allah</p>
                     </button>
-                    <button onclick="showTab('last10')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center text-white mb-2">
+                    <button onclick="showTab('last10')"
+                        class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center text-white mb-2">
                             <i class="fas fa-star"></i>
                         </div>
                         <p class="font-semibold text-sm">10 Malam Terakhir</p>
                         <p class="text-xs text-slate-500">Lailatul Qadr</p>
                     </button>
-                    <button onclick="showTab('tarawih')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center text-white mb-2">
+                    <button onclick="showTab('tarawih')"
+                        class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center text-white mb-2">
                             <i class="fas fa-moon"></i>
                         </div>
                         <p class="font-semibold text-sm">Target Tarawih</p>
                         <p class="text-xs text-slate-500">Lacak rakaat</p>
                     </button>
-                     <button onclick="showTab('about')" class="glass-card p-4 text-left hover:scale-102 transition-transform">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center text-white mb-2">
+                    <button onclick="showTab('about')"
+                        class="glass-card p-4 text-left hover:scale-102 transition-transform">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center text-white mb-2">
                             <i class="fas fa-info-circle"></i>
                         </div>
                         <p class="font-semibold text-sm">Tentang Kami</p>
@@ -642,15 +893,18 @@
             <div class="glass-card p-6">
                 <h3 class="font-bold text-slate-700 mb-4">Pengaturan Lanjutan</h3>
                 <div class="space-y-3">
-                    <button onclick="exportData()" class="w-full py-3 glass-card text-left px-4 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-between">
+                    <button onclick="exportData()"
+                        class="w-full py-3 glass-card text-left px-4 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-between">
                         <span class="font-medium text-sm">Export Data</span>
                         <i class="fas fa-download text-slate-400"></i>
                     </button>
-                    <button onclick="importData()" class="w-full py-3 glass-card text-left px-4 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-between">
+                    <button onclick="importData()"
+                        class="w-full py-3 glass-card text-left px-4 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-between">
                         <span class="font-medium text-sm">Import Data</span>
                         <i class="fas fa-upload text-slate-400"></i>
                     </button>
-                    <button onclick="resetAllData()" class="w-full py-3 glass-card text-left px-4 rounded-xl hover:bg-rose-50 transition-all flex items-center justify-between text-rose-500">
+                    <button onclick="resetAllData()"
+                        class="w-full py-3 glass-card text-left px-4 rounded-xl hover:bg-rose-50 transition-all flex items-center justify-between text-rose-500">
                         <span class="font-medium text-sm">Reset Semua Data</span>
                         <i class="fas fa-trash"></i>
                     </button>
@@ -667,11 +921,14 @@
                 </h3>
                 <p class="text-slate-600 text-md mb-6 leading-relaxed">
                     Aplikasi "Ramadan Nexus Elite" adalah buah karya kolaborasi penuh dedikasi,
-                    diciptakan dengan visi untuk memperkaya pengalaman ibadah dan spiritualitas Anda di bulan suci Ramadan.
-                    Kami percaya teknologi dapat menjadi jembatan menuju ketenangan dan produktivitas ibadah yang lebih baik.
+                    diciptakan dengan visi untuk memperkaya pengalaman ibadah dan spiritualitas Anda di bulan suci
+                    Ramadan.
+                    Kami percaya teknologi dapat menjadi jembatan menuju ketenangan dan produktivitas ibadah yang lebih
+                    baik.
                 </p>
                 <div class="flex items-center justify-center gap-4 mb-6">
-                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-rose-400 flex items-center justify-center text-white text-3xl font-bold">
+                    <div
+                        class="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-rose-400 flex items-center justify-center text-white text-3xl font-bold">
                         R_O
                     </div>
                     <div>
@@ -680,7 +937,8 @@
                     </div>
                 </div>
                 <div class="flex items-center justify-center gap-4 mb-6">
-                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 to-blue-400 flex items-center justify-center text-white text-3xl font-bold">
+                    <div
+                        class="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 to-blue-400 flex items-center justify-center text-white text-3xl font-bold">
                         VCP
                     </div>
                     <div>
@@ -692,7 +950,8 @@
                     Punya ide brilian atau menemukan celah? Kami sangat menghargai masukan Anda!
                     Jangan ragu untuk berbagi pemikiran, saran, atau pertanyaan Anda.
                 </p>
-                <a href="https://talk.visualcodepo.my.id/" target="_blank" rel="noopener" class="btn-primary inline-flex items-center">
+                <a href="https://talk.visualcodepo.my.id/" target="_blank" rel="noopener"
+                    class="btn-primary inline-flex items-center">
                     <i class="fas fa-paper-plane mr-2"></i> Kirim Pesan kepada Kami
                 </a>
             </div>
@@ -747,8 +1006,9 @@
                     <div class="relative">
                         <svg class="progress-ring w-28 h-28">
                             <circle cx="56" cy="56" r="52" stroke="#e2e8f0" stroke-width="6" fill="transparent" />
-                            <circle id="tarawih-ring" cx="56" cy="56" r="52" stroke="#3b82f6" stroke-width="6" fill="transparent" 
-                                stroke-dasharray="326.73" stroke-dashoffset="326.73" stroke-linecap="round" class="progress-ring-circle" />
+                            <circle id="tarawih-ring" cx="56" cy="56" r="52" stroke="#3b82f6" stroke-width="6"
+                                fill="transparent" stroke-dasharray="326.73" stroke-dashoffset="326.73"
+                                stroke-linecap="round" class="progress-ring-circle" />
                         </svg>
                         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
                             <span id="tarawih-rakaat" class="text-xl font-black text-slate-800">0</span>
@@ -758,9 +1018,11 @@
                     <div class="flex-1">
                         <p class="text-sm text-slate-500 mb-2">Rakaat hari ini</p>
                         <div class="flex gap-2">
-                            <button onclick="addTarawih(-2)" title="Kurangi 2 Rakaat" class="w-10 h-10 glass-card rounded-xl text-slate-500">-2</button>
+                            <button onclick="addTarawih(-2)" title="Kurangi 2 Rakaat"
+                                class="w-10 h-10 glass-card rounded-xl text-slate-500">-2</button>
                             <button onclick="addTarawih(2)" class="flex-1 btn-secondary py-2">+2 Rakaat</button>
-                            <button onclick="addTarawih(8)" title="Tambah 8 Rakaat" class="w-10 h-10 glass-card rounded-xl text-slate-500">+8</button>
+                            <button onclick="addTarawih(8)" title="Tambah 8 Rakaat"
+                                class="w-10 h-10 glass-card rounded-xl text-slate-500">+8</button>
                         </div>
                     </div>
                 </div>
@@ -777,6 +1039,112 @@
             </div>
         </section>
 
+        <!-- MONEY TRACKING SECTION - GOPAY STYLE -->
+        <section id="section-money" class="hidden-section space-y-6">
+            <!-- Balance Card - GoPay Style -->
+            <div class="money-balance-card glass-card-strong p-0 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500"></div>
+                <div
+                    class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30">
+                </div>
+
+                <div class="relative z-10 p-6">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <p class="text-white/80 text-sm font-semibold mb-1">Total Saldo</p>
+                            <h3 id="money-balance" class="text-4xl font-black text-white mb-1">Rp 0</h3>
+                            <p class="text-white/60 text-xs">Ramadan Finance</p>
+                        </div>
+                        <button onclick="toggleBalanceVisibility()"
+                            class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 transition-colors">
+                            <i id="balance-eye-icon" class="fas fa-eye"></i>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-3 border border-white/20">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fas fa-arrow-down text-emerald-300 text-sm"></i>
+                                <span class="text-white/70 text-xs">Pemasukan</span>
+                            </div>
+                            <p id="money-income" class="text-white font-bold text-lg">Rp 0</p>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-3 border border-white/20">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="fas fa-arrow-up text-rose-300 text-sm"></i>
+                                <span class="text-white/70 text-xs">Pengeluaran</span>
+                            </div>
+                            <p id="money-expense" class="text-white font-bold text-lg">Rp 0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="openAddMoneyModal('income')"
+                    class="glass-card p-4 flex items-center gap-3 hover:scale-105 transition-transform">
+                    <div
+                        class="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white">
+                        <i class="fas fa-plus text-xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="font-bold text-slate-700 text-sm">Tambah</p>
+                        <p class="text-xs text-slate-500">Pemasukan</p>
+                    </div>
+                </button>
+                <button onclick="openAddMoneyModal('expense')"
+                    class="glass-card p-4 flex items-center gap-3 hover:scale-105 transition-transform">
+                    <div
+                        class="w-12 h-12 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center text-white">
+                        <i class="fas fa-minus text-xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="font-bold text-slate-700 text-sm">Tambah</p>
+                        <p class="text-xs text-slate-500">Pengeluaran</p>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Statistics Charts -->
+            <div class="glass-card p-6">
+                <h3 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-chart-pie text-violet-500"></i>
+                    Statistik Keuangan
+                </h3>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="text-center">
+                        <canvas id="money-category-chart" class="max-h-40"></canvas>
+                        <p class="text-xs text-slate-500 mt-2">Kategori Pengeluaran</p>
+                    </div>
+                    <div class="text-center">
+                        <canvas id="money-trend-chart" class="max-h-40"></canvas>
+                        <p class="text-xs text-slate-500 mt-2">Trend 7 Hari</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction History -->
+            <div class="glass-card p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2">
+                        <i class="fas fa-history text-blue-500"></i>
+                        Riwayat Transaksi
+                    </h3>
+                    <button onclick="clearAllTransactions()"
+                        class="text-xs text-rose-500 hover:text-rose-600 font-semibold">
+                        <i class="fas fa-trash-alt mr-1"></i>Hapus Semua
+                    </button>
+                </div>
+                <div id="money-transactions" class="space-y-2 max-h-96 overflow-y-auto custom-scroll">
+                    <div class="text-center text-slate-400 py-8">
+                        <i class="fas fa-wallet text-4xl mb-2 opacity-50"></i>
+                        <p class="text-sm">Belum ada transaksi</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- COMMUNITY SECTION -->
         <section id="section-community" class="hidden-section space-y-6">
             <div class="glass-card glass-card-strong p-6">
@@ -788,7 +1156,8 @@
                             <span class="text-sm text-emerald-600 font-bold">23% Selesai</span>
                         </div>
                         <div class="h-2 bg-white rounded-full overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full" style="width: 23%"></div>
+                            <div class="h-full bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full"
+                                style="width: 23%"></div>
                         </div>
                         <p class="text-xs text-slate-500 mt-2">1,234 peserta sedang bersama-sama mengkhatamkan Quran</p>
                     </div>
@@ -827,7 +1196,11 @@
                 <i class="fas fa-bullseye text-lg"></i>
                 <span class="text-[10px] font-bold mt-1 block">Target</span>
             </button>
-             <button onclick="showTab('articles')" id="nav-articles" class="nav-item">
+            <button onclick="showTab('money')" id="nav-money" class="nav-item">
+                <i class="fas fa-wallet text-lg"></i>
+                <span class="text-[10px] font-bold mt-1 block">Uang</span>
+            </button>
+            <button onclick="showTab('articles')" id="nav-articles" class="nav-item">
                 <i class="fas fa-newspaper text-lg"></i>
                 <span class="text-[10px] font-bold mt-1 block">Artikel</span>
             </button>
@@ -846,7 +1219,8 @@
     <div id="journal-modal" class="modal-overlay">
         <div class="modal-content">
             <h3 class="font-bold text-lg mb-4">Tulis Journal</h3>
-            <textarea id="journal-text" class="input-luxury h-32 resize-none mb-4" placeholder="Bagaimana harimu?"></textarea>
+            <textarea id="journal-text" class="input-luxury h-32 resize-none mb-4"
+                placeholder="Bagaimana harimu?"></textarea>
             <div class="flex gap-3">
                 <button onclick="closeJournalModal()" class="flex-1 btn-secondary">Batal</button>
                 <button onclick="saveJournal()" class="flex-1 btn-primary">Simpan</button>
@@ -877,21 +1251,27 @@
                     <span class="font-medium">Notifikasi Sholat</span>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="prayer-notification" class="sr-only peer" checked>
-                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                        <div
+                            class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500">
+                        </div>
                     </label>
                 </div>
                 <div class="flex items-center justify-between py-2">
                     <span class="font-medium">Reminder Sahur</span>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="sahur-reminder" class="sr-only peer" checked>
-                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                        <div
+                            class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500">
+                        </div>
                     </label>
                 </div>
                 <div class="flex items-center justify-between py-2">
                     <span class="font-medium">Mode Gelap</span>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="dark-mode-toggle" class="sr-only peer" title="Aktifkan Mode Gelap">
-                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-700"></div>
+                        <div
+                            class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-700">
+                        </div>
                     </label>
                 </div>
             </div>
@@ -905,27 +1285,33 @@
         <div class="modal-content">
             <h3 class="font-bold text-lg mb-4">Aksi Cepat</h3>
             <div class="grid grid-cols-3 gap-3">
-                <button onclick="quickAction('quran-page')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                <button onclick="quickAction('quran-page')"
+                    class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
                     <i class="fas fa-book-quran text-emerald-500 text-xl"></i>
                     <span class="text-xs font-medium">+Quran</span>
                 </button>
-                <button onclick="quickAction('sedekah')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                <button onclick="quickAction('sedekah')"
+                    class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
                     <i class="fas fa-heart text-rose-500 text-xl"></i>
                     <span class="text-xs font-medium">+Sedekah</span>
                 </button>
-                <button onclick="quickAction('dzikir')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                <button onclick="quickAction('dzikir')"
+                    class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
                     <i class="fas fa-hands-praying text-amber-500 text-xl"></i>
                     <span class="text-xs font-medium">+Dzikir</span>
                 </button>
-                <button onclick="quickAction('water')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                <button onclick="quickAction('water')"
+                    class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
                     <i class="fas fa-droplet text-blue-500 text-xl"></i>
                     <span class="text-xs font-medium">+Air</span>
                 </button>
-                <button onclick="quickAction('tarawih')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                <button onclick="quickAction('tarawih')"
+                    class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
                     <i class="fas fa-moon text-indigo-500 text-xl"></i>
                     <span class="text-xs font-medium">+Tarawih</span>
                 </button>
-                <button onclick="quickAction('journal')" class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
+                <button onclick="quickAction('journal')"
+                    class="glass-card p-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform">
                     <i class="fas fa-pen text-violet-500 text-xl"></i>
                     <span class="text-xs font-medium">+Journal</span>
                 </button>
@@ -935,6 +1321,132 @@
     </div>
 
 
+    <!-- Audio Adzan Player Modal -->
+    <div id="adzan-player-modal" class="modal-overlay">
+        <div class="modal-content max-w-md">
+            <div class="text-center mb-6">
+                <div
+                    class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
+                    <i class="fas fa-mosque text-white text-3xl"></i>
+                </div>
+                <h2 class="text-2xl font-black text-gradient-emerald mb-2">Waktu Sholat</h2>
+                <p id="adzan-prayer-name" class="text-lg font-semibold text-slate-700">Dzuhur</p>
+                <p class="text-sm text-slate-500">Telah tiba waktunya untuk sholat</p>
+            </div>
+
+            <div class="glass-card p-6 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <button id="adzan-play-btn" onclick="toggleAdzanPlay()"
+                            class="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-white flex items-center justify-center hover:scale-110 transition-transform">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-700">Adzan Audio</p>
+                            <p class="text-xs text-slate-500" id="adzan-status">Siap diputar</p>
+                        </div>
+                    </div>
+                    <button onclick="stopAdzan()" class="text-slate-500 hover:text-rose-500 transition-colors">
+                        <i class="fas fa-stop-circle text-2xl"></i>
+                    </button>
+                </div>
+
+                <div class="relative h-2 bg-slate-200 rounded-full overflow-hidden">
+                    <div id="adzan-progress"
+                        class="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full transition-all"
+                        style="width: 0%"></div>
+                </div>
+
+                <div class="flex justify-between items-center mt-2 text-xs text-slate-500">
+                    <span id="adzan-current-time">0:00</span>
+                    <span id="adzan-duration">0:00</span>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="closeAdzanPlayer()" class="btn-secondary flex-1">
+                    <i class="fas fa-times mr-2"></i>Tutup
+                </button>
+                <button onclick="closeAdzanPlayer(); showTab('prayer-settings')" class="btn-primary flex-1">
+                    <i class="fas fa-mosque mr-2"></i>Sholat
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Audio Element -->
+    <audio id="adzan-audio" preload="metadata">
+        <!-- Using online adzan audio -->
+        <source src="https://www.islamcan.com/audio/adhan/adhan-makkah.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Add Money Transaction Modal -->
+    <div id="money-modal" class="modal-overlay">
+        <div class="modal-content max-w-md">
+            <h3 class="text-2xl font-black mb-2" id="money-modal-title">Tambah Pemasukan</h3>
+            <p class="text-sm text-slate-500 mb-6">Catat transaksi keuangan Anda</p>
+            
+            <div class="space-y-4">
+                <!-- Amount -->
+                <div>
+                    <label class="text-sm font-semibold text-slate-600 mb-2 block">Jumlah (Rp)</label>
+                    <input type="number" id="money-amount" placeholder="0" class="input-luxury text-2xl font-bold">
+                </div>
+
+                <!-- Category -->
+                <div>
+                    <label class="text-sm font-semibold text-slate-600 mb-2 block">Kategori</label>
+                    <select id="money-category" class="input-luxury">
+                        <option value="">Pilih Kategori</option>
+                        <!-- Income categories -->
+                        <optgroup label="Pemasukan" id="income-categories">
+                            <option value="gaji">💰 Gaji</option>
+                            <option value="bonus">🎁 Bonus</option>
+                            <option value="hadiah">🎉 Hadiah</option>
+                            <option value="lainnya-income">💵 Lainnya</option>
+                        </optgroup>
+                        <!-- Expense categories -->
+                        <optgroup label="Pengeluaran" id="expense-categories">
+                            <option value="makanan">🍔 Makanan & Minuman</option>
+                            <option value="transport">🚗 Transportasi</option>
+                            <option value="sedekah">💝 Sedekah</option>
+                            <option value="zakat">🕌 Zakat</option>
+                            <option value="belanja">🛒 Belanja</option>
+                            <option value="tagihan">📱 Tagihan</option>
+                            <option value="kesehatan">⚕️ Kesehatan</option>
+                            <option value="pendidikan">📚 Pendidikan</option>
+                            <option value="hiburan">🎮 Hiburan</option>
+                            <option value="lainnya-expense">💸 Lainnya</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label class="text-sm font-semibold text-slate-600 mb-2 block">Keterangan (Opsional)</label>
+                    <input type="text" id="money-description" placeholder="Contoh: Beli buku Ramadan" class="input-luxury">
+                </div>
+
+                <!-- Date -->
+                <div>
+                    <label class="text-sm font-semibold text-slate-600 mb-2 block">Tanggal</label>
+                    <input type="date" id="money-date" class="input-luxury">
+                </div>
+            </div>
+
+            <div class="flex gap-3 mt-6">
+                <button onclick="closeMoneyModal()" class="btn-secondary flex-1">
+                    <i class="fas fa-times mr-2"></i>Batal
+                </button>
+                <button onclick="saveMoneyTransaction()" class="btn-primary flex-1" id="money-save-btn">
+                    <i class="fas fa-save mr-2"></i>Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/clock-update.js"></script>
     <script src="js/servers.js"></script>
 </body>
+
 </html>
