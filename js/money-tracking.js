@@ -1,18 +1,13 @@
-// ============================================
-// MONEY TRACKING SYSTEM
-// ============================================
 
-// Money state
 let moneyState = {
     balance: 0,
     startBalance: 0,
     transactions: [],
     balanceVisible: true,
     currentEditId: null,
-    currentType: 'income' // income or expense
+    currentType: 'income' 
 };
 
-// Load money state from localStorage
 function loadMoneyState() {
     const saved = localStorage.getItem('ramadhan_money');
     if (saved) {
@@ -20,12 +15,11 @@ function loadMoneyState() {
     }
 }
 
-// Save money state to localStorage
 function saveMoneyState() {
     localStorage.setItem('ramadhan_money', JSON.stringify(moneyState));
 }
 
-// Format currency to Rupiah
+
 function formatCurrency(amount) {
     return new Intl.NumberFormat('id-ID', {
         style: 'currency',
@@ -35,7 +29,6 @@ function formatCurrency(amount) {
     }).format(amount);
 }
 
-// Toggle balance visibility
 function toggleBalanceVisibility() {
     moneyState.balanceVisible = !moneyState.balanceVisible;
     updateMoneyUI();
