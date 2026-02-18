@@ -2,6 +2,14 @@
 // DATA CONFIGURATION
 // ============================================
 const prayerTimes = {
+  medan: {
+    imsak: "05:12",
+    subuh: "05:22",
+    dzuhur: "12:43",
+    ashar: "16:00",
+    maghrib: "18:42",
+    isya: "19:51",
+  },
   jakarta: {
     imsak: "04:38",
     subuh: "04:48",
@@ -34,14 +42,7 @@ const prayerTimes = {
     maghrib: "17:59",
     isya: "19:09",
   },
-  medan: {
-    imsak: "05:02",
-    subuh: "05:12",
-    dzuhur: "12:29",
-    ashar: "15:41",
-    maghrib: "18:29",
-    isya: "19:39",
-  },
+  
 };
 
 const dailyQuotes = [
