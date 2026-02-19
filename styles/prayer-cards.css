@@ -11,8 +11,8 @@
 
 @media (max-width: 380px) {
   #prayer-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
+    /* Still 2 columns on small screens, just tighter gap */
+    gap: 8px;
   }
 }
 
@@ -322,25 +322,30 @@
 }
 
 /* ---- Responsive Tweaks ---- */
-@media (max-width: 400px) {
+@media (max-width: 380px) {
   .prayer-card-content {
-    gap: 9px;
-    padding: 13px 11px;
+    gap: 7px;
+    padding: 11px 9px;
+    flex-wrap: wrap;
   }
   .prayer-icon-ring {
-    width: 42px;
-    height: 42px;
-    border-radius: 13px;
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
   }
   .prayer-icon-fa {
-    font-size: 17px;
+    font-size: 15px;
   }
   .prayer-name-label {
-    font-size: 12.5px;
+    font-size: 11.5px;
+  }
+  .prayer-desc-label {
+    display: none; /* hide description on very small screens to save space */
   }
   .prayer-time-badge {
-    font-size: 14px;
-    padding: 5px 9px;
+    font-size: 12px;
+    padding: 4px 7px;
+    border-radius: 8px;
   }
 }
 

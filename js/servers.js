@@ -2093,41 +2093,55 @@ function showTab(tab) {
   // Hide all sections
   document.querySelectorAll("main > section").forEach((section) => {
     section.classList.add("hidden-section");
+    section.classList.remove("fade-in", "tab-active");
   });
 
-  // Show selected section
+  // Show selected section with animation
   const section = document.getElementById(`section-${tab}`);
   if (section) {
     section.classList.remove("hidden-section");
-    section.classList.add("fade-in");
+    void section.offsetWidth; // force reflow
+    section.classList.add("fade-in", "tab-active");
+
+    // Ensure all cards inside are visible (fix for scroll-reveal bug)
+    section
+      .querySelectorAll(
+        ".glass-card, .iftar-countdown-card, .quran-verse-card, .murottal-card",
+      )
+      .forEach((card, i) => {
+        card.style.opacity = "1";
+        card.style.transform = "none";
+        // Add staggered entrance animation
+        card.style.animationDelay = i * 0.06 + "s";
+      });
   }
 
-  // Update nav
-  document.querySelectorAll(".nav-item").forEach((item) => {
+  // Update BOTH old nav-item AND new elite-nav-item classes
+  document.querySelectorAll(".nav-item, .elite-nav-item").forEach((item) => {
     item.classList.remove("active");
   });
 
-  // Activate the correct nav item, including the new 'articles' one
+  // Activate the correct nav item
   let navItem = document.getElementById(`nav-${tab}`);
-  if (tab === "articles") {
-    navItem = document.getElementById("nav-articles");
-  }
   if (navItem) {
     navItem.classList.add("active");
   }
 
+  // Move elite nav pill indicator to the active item
+  if (typeof window.eliteNavMovePill === "function") {
+    window.eliteNavMovePill(tab);
+  }
+
+  // Scroll to top of content
+  const wrapper = document.getElementById("scroll-wrapper");
+  if (wrapper) wrapper.scrollTop = 0;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
   // Update charts if stats tab
   if (tab === "stats") {
     setTimeout(updateCharts, 100);
-    showToast("Menampilkan Statistik", "info");
   } else if (tab === "qibla") {
-    // Ensure Qibla direction is calculated when the Qibla tab is shown
     getQiblaDirection();
-    showToast("Menampilkan Arah Kiblat", "info");
-  } else if (tab === "tracker") {
-    showToast("Menampilkan Target", "info");
-  } else if (tab === "articles") {
-    showToast("Menampilkan Artikel", "info");
   }
 }
 

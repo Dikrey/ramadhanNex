@@ -1,0 +1,325 @@
+/* ================================================================
+   RAMADAN ELITE — ULTIMATE NAV & FAB v4.0 (FINAL)
+   Style: Holographic Dark Glass + Liquid Nebula Gradient
+   Animation: Spring Physics + Neon Glow
+   ================================================================ */
+
+/* Pastikan font dimuat */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap");
+
+/* ─────────────────────────────────────────────────────────────
+   🌌 ULTIMATE BOTTOM NAVIGATION CONTAINER
+───────────────────────────────────────────────────────────── */
+#bottom-nav.elite-nav {
+  position: fixed !important;
+  bottom: 25px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: min(90vw, 420px) !important;
+  height: 72px !important;
+  z-index: 999999 !important;
+
+  /* Layout Box */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 8px !important;
+  border-radius: 40px !important;
+
+  /* Holographic Dark Glass Material */
+  background: rgba(18, 18, 28, 0.85) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+
+  /* Glowing Border */
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow:
+    0 20px 50px -10px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+
+  /* Entrance Animation */
+  animation: navFloatUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s both !important;
+}
+
+@keyframes navFloatUp {
+  from {
+    transform: translateX(-50%) translateY(100px) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Lighting efffect on top edge */
+#bottom-nav.elite-nav::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 20px !important;
+  right: 20px !important;
+  height: 1px !important;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  ) !important;
+  opacity: 0.6 !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   💎 LIQUID PILL INDICATOR (Background Aktif)
+───────────────────────────────────────────────────────────── */
+#elite-nav-pill {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  height: 56px !important; /* Tinggi hampir full nav */
+  width: 56px !important; /* Lebar menyesuaikan JS nanti, tapi base square */
+  border-radius: 28px !important;
+
+  /* Crazy Liquid Gradient */
+  background: linear-gradient(
+    135deg,
+    #ff9f1c 0%,
+    #ff4b1f 50%,
+    #8a2be2 100%
+  ) !important;
+  background-size: 200% 200% !important;
+  animation: liquidFlow 3s ease infinite !important;
+
+  /* Glow Effect */
+  box-shadow:
+    0 10px 25px -5px rgba(255, 75, 31, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3) !important;
+
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  z-index: 0 !important;
+}
+
+@keyframes liquidFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   🔘 NAV ITEMS
+───────────────────────────────────────────────────────────── */
+.elite-nav-item {
+  position: relative !important;
+  z-index: 10 !important;
+  flex: 1 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  -webkit-tap-highlight-color: transparent !important;
+  transition: transform 0.2s ease !important;
+}
+
+.elite-nav-item:active {
+  transform: scale(0.9);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   🌟 ICONS
+───────────────────────────────────────────────────────────── */
+.elite-nav-icon-wrap {
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  position: relative !important;
+}
+
+.elite-nav-icon-wrap i {
+  font-size: 20px !important;
+  color: #8a8a9a !important; /* Warna text mati */
+  transition: all 0.3s ease !important;
+}
+
+/* STATE: ACTIVE & ICON JUMP (JS Trigger) */
+.elite-nav-item.active .elite-nav-icon-wrap i,
+.elite-nav-item.icon-jump .elite-nav-icon-wrap i {
+  color: #ffffff !important;
+  font-size: 22px !important;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6)) !important;
+  animation: iconPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+}
+
+@keyframes iconPop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.4) translateY(-10px);
+  }
+  60% {
+    transform: scale(0.9) translateY(2px);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* DOT INDIKATOR PUTIH */
+.elite-nav-dot {
+  position: absolute !important;
+  bottom: 8px !important;
+  width: 5px !important;
+  height: 5px !important;
+  background: #fff !important;
+  border-radius: 50% !important;
+  opacity: 0 !important;
+  transform: scale(0) !important;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.9) !important;
+  transition: all 0.3s ease !important;
+  pointer-events: none !important;
+}
+
+.elite-nav-item.active .elite-nav-dot {
+  opacity: 1 !important;
+  transform: scale(1) translateY(10px) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   📝 LABELS (TEKS)
+───────────────────────────────────────────────────────────── */
+.elite-nav-label {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px !important;
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  position: absolute !important;
+  bottom: 8px !important; /* Nempel di bawah */
+  opacity: 0 !important;
+  transform: translateY(10px) !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Teks aktif muncul */
+.elite-nav-item.active .elite-nav-label {
+  opacity: 1 !important;
+  transform: translateY(
+    18px
+  ) !important; /* Geser agak ke bawah container biar keluar dikit visualnya */
+  display: none !important; /* Sembunyikan label, ganti style icon centered besar ala material */
+}
+/* REVISI: GAYA MATERIAL 3 - Label HILANG saat aktif, Icon BEsar, atau Label MUNCUL */
+/* Saya pilih gaya: Label Muncul di bawah icon yang naik */
+
+.elite-nav-item .elite-nav-label {
+  display: block !important;
+  position: static !important;
+  margin-top: 2px !important;
+  font-size: 0px !important; /* Hide initially with size animation */
+  opacity: 0 !important;
+  height: 0 !important;
+  transform: translateY(5px) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.elite-nav-item.active .elite-nav-label {
+  font-size: 10px !important;
+  opacity: 1 !important;
+  height: auto !important;
+  transform: translateY(0) !important;
+  margin-top: 4px !important;
+  color: #fff !important;
+}
+
+/* Saat aktif, icon naik sedikit */
+.elite-nav-item.active .elite-nav-icon-wrap {
+  transform: translateY(-2px) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   🚁 FLOATING ACTION BUTTON (FAB) - SUPER GLOW
+───────────────────────────────────────────────────────────── */
+.elite-fab {
+  position: fixed !important;
+  bottom: 110px !important;
+  right: 24px !important;
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 50% !important;
+  background: #101018 !important; /* Dark Core */
+  border: none !important;
+  cursor: pointer !important;
+  z-index: 999998 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+.elite-fab:active {
+  transform: scale(0.9) !important;
+}
+
+/* Ring Berputar Warna-Warni */
+.elite-fab-ring {
+  position: absolute !important;
+  inset: -3px !important;
+  border-radius: 50% !important;
+  background: conic-gradient(from 0deg, #ff0080, #7928ca, #ff0080) !important;
+  animation: spin 2s linear infinite !important;
+  z-index: -1 !important;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Glow Aura */
+.elite-fab-ring2 {
+  position: absolute !important;
+  inset: -3px !important;
+  border-radius: 50% !important;
+  background: inherit !important;
+  filter: blur(10px) !important;
+  opacity: 0.7 !important;
+  z-index: -2 !important;
+}
+
+.elite-fab-icon {
+  font-size: 28px !important;
+  background: linear-gradient(to right, #fff, #e0e0e0) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   📱 RESPONSIVE TWEAKS
+───────────────────────────────────────────────────────────── */
+@media (max-width: 400px) {
+  #bottom-nav.elite-nav {
+    width: 94vw !important;
+    bottom: 20px !important;
+    height: 68px !important;
+    padding: 0 4px !important;
+  }
+}

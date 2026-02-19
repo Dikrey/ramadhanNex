@@ -9,12 +9,12 @@
    ⏱️ 1. IFTAR / MAGHRIB COUNTDOWN TIMER
    ============================================================ */
 (function initIftarCountdown() {
-  // Prayer times per city (copied from constants, fallback to Medan)
-  const MAGHRIB_TIMES = {
-    medan: "18:39",
+  // Fallback times — MUST match servers.js prayerTimes exactly
+  const MAGHRIB_FALLBACK = {
+    medan: "18:42",
     jakarta: "18:05",
     surabaya: "17:48",
-    bandung: "18:02",
+    bandung: "18:07",
     yogyakarta: "17:50",
     makassar: "18:00",
     palembang: "18:08",
@@ -27,7 +27,16 @@
 
   function getMaghribTime() {
     const city = (localStorage.getItem("prayerCity") || "medan").toLowerCase();
-    return MAGHRIB_TIMES[city] || MAGHRIB_TIMES["medan"];
+    // Priority 1: use global prayerTimes from servers.js (always in sync)
+    if (
+      typeof prayerTimes !== "undefined" &&
+      prayerTimes[city] &&
+      prayerTimes[city].maghrib
+    ) {
+      return prayerTimes[city].maghrib;
+    }
+    // Priority 2: fallback table
+    return MAGHRIB_FALLBACK[city] || MAGHRIB_FALLBACK["medan"];
   }
 
   function updateIftarCountdown() {
@@ -447,14 +456,14 @@
     setTimeout(() => star.remove(), 8000);
   }
 
-  // Add smooth page-in animation on load
+  // Add smooth page-in animation on load — apply to scroll-wrapper NOT body
+  // (transform on body would break position:fixed for nav and FAB!)
   function pageLoadAnimation() {
-    document.body.style.opacity = "0";
-    document.body.style.transform = "translateY(10px)";
+    const wrapper = document.getElementById("scroll-wrapper") || document.body;
+    wrapper.style.opacity = "0";
     requestAnimationFrame(() => {
-      document.body.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-      document.body.style.opacity = "1";
-      document.body.style.transform = "translateY(0)";
+      wrapper.style.transition = "opacity 0.7s ease";
+      wrapper.style.opacity = "1";
     });
   }
 
@@ -464,3 +473,80 @@
     setInterval(createStarParticle, 600);
   });
 })();
+
+/* ============================================================
+   🧭 5. ELITE BOTTOM NAV — Sliding Pill Indicator
+   ============================================================ */
+function eliteNavInit() {
+  const nav = document.getElementById("bottom-nav");
+  if (!nav) return;
+
+  const pill = document.getElementById("elite-nav-pill");
+  const items = nav.querySelectorAll(".elite-nav-item");
+
+  function movePill(activeItem) {
+    if (!pill || !activeItem) return;
+    const navRect = nav.getBoundingClientRect();
+    const itemRect = activeItem.getBoundingClientRect();
+    const left = itemRect.left - navRect.left;
+    const width = itemRect.width;
+    pill.style.left = left + "px";
+    pill.style.width = width + "px";
+  }
+
+  function triggerIconJump(item) {
+    if (!item) return;
+    // Remove class, force reflow, re-add to retrigger animation
+    item.classList.remove("icon-jump");
+    void item.offsetWidth;
+    item.classList.add("icon-jump");
+    setTimeout(() => item.classList.remove("icon-jump"), 600);
+  }
+
+  // Initial pill position — wait for layout
+  const initPill = () => {
+    const activeOnLoad = nav.querySelector(".elite-nav-item.active");
+    if (activeOnLoad) movePill(activeOnLoad);
+  };
+  requestAnimationFrame(() => requestAnimationFrame(initPill));
+  // Also try after fonts/images loaded
+  window.addEventListener("load", initPill, { once: true });
+
+  // On click: move pill + trigger icon jump
+  items.forEach((item) => {
+    item.addEventListener("click", () => {
+      const prev = nav.querySelector(".elite-nav-item.active");
+      if (prev === item) return; // already active
+      items.forEach((i) => i.classList.remove("active"));
+      item.classList.add("active");
+      movePill(item);
+      triggerIconJump(item);
+    });
+  });
+
+  // Recalculate on resize / orientation change
+  window.addEventListener("resize", () => {
+    const active = nav.querySelector(".elite-nav-item.active");
+    if (active) movePill(active);
+  });
+
+  // EXPOSED: called from showTab() in servers.js
+  window.eliteNavMovePill = function (tabId) {
+    const target = document.getElementById("nav-" + tabId);
+    if (!target) return;
+    items.forEach((i) => i.classList.remove("active"));
+    target.classList.add("active");
+    movePill(target);
+    triggerIconJump(target);
+  };
+}
+
+// Also hook into existing showTab if it exists
+if (typeof window !== "undefined") {
+  const _origShowTab = window.showTab;
+  window.showTab = function (tabId) {
+    if (typeof _origShowTab === "function") _origShowTab(tabId);
+    if (typeof window.eliteNavMovePill === "function")
+      window.eliteNavMovePill(tabId);
+  };
+}
