@@ -1,0 +1,369 @@
+/* ============================================================
+   PREMIUM PRAYER TIME CARDS — Fully Responsive & Animated
+   ============================================================ */
+
+/* ---- Grid Layout ---- */
+#prayer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 380px) {
+  #prayer-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+/* ---- Base Card ---- */
+.prayer-card-modern {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  cursor: pointer;
+  min-height: 82px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.22),
+    0 2px 8px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s ease;
+  animation: prayerCardIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+@keyframes prayerCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.prayer-card-modern:hover {
+  transform: translateY(-6px) scale(1.025);
+  box-shadow:
+    0 24px 50px rgba(0, 0, 0, 0.32),
+    0 8px 20px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.prayer-card-modern:active {
+  transform: translateY(-2px) scale(0.98);
+  transition-duration: 0.1s;
+}
+
+/* ---- Background Gradient ---- */
+.prayer-card-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Subtle noise texture overlay for depth */
+.prayer-card-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* ---- Glow Ring (Next Prayer) ---- */
+.prayer-card-glow-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 25px;
+  z-index: 1;
+  pointer-events: none;
+  box-shadow:
+    0 0 0 2.5px var(--glow, rgba(255, 255, 255, 0.25)),
+    0 0 35px 6px var(--glow, rgba(255, 255, 255, 0.15)),
+    0 0 70px 12px var(--glow, rgba(255, 255, 255, 0.07));
+  animation: prayerGlowPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes prayerGlowPulse {
+  0%,
+  100% {
+    opacity: 0.75;
+    box-shadow:
+      0 0 0 2.5px var(--glow, rgba(255, 255, 255, 0.25)),
+      0 0 35px 6px var(--glow, rgba(255, 255, 255, 0.15)),
+      0 0 70px 12px var(--glow, rgba(255, 255, 255, 0.07));
+  }
+  50% {
+    opacity: 1;
+    box-shadow:
+      0 0 0 3.5px var(--glow, rgba(255, 255, 255, 0.38)),
+      0 0 55px 10px var(--glow, rgba(255, 255, 255, 0.25)),
+      0 0 100px 20px var(--glow, rgba(255, 255, 255, 0.1));
+  }
+}
+
+/* ---- Card Content Row ---- */
+.prayer-card-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 14px;
+}
+
+/* ---- Icon Ring ---- */
+.prayer-icon-ring {
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.13);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.25),
+    0 0 14px var(--glow, rgba(255, 255, 255, 0.2)),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer sweep on icon ring */
+.prayer-icon-ring::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.18),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.prayer-card-modern:hover .prayer-icon-ring::before {
+  left: 200%;
+}
+
+.prayer-card-modern:hover .prayer-icon-ring {
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.3),
+    0 0 24px var(--glow, rgba(255, 255, 255, 0.35)),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: scale(1.08) rotate(-6deg);
+}
+
+.prayer-icon-fa {
+  font-size: 20px;
+  color: var(--accent, #fff);
+  filter: drop-shadow(0 0 8px var(--glow, rgba(255, 255, 255, 0.6)));
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
+}
+
+.prayer-card-modern:hover .prayer-icon-fa {
+  filter: drop-shadow(0 0 14px var(--glow, rgba(255, 255, 255, 0.9)));
+}
+
+/* ---- Text Block ---- */
+.prayer-card-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.prayer-name-label {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.97);
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.prayer-desc-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.58);
+  letter-spacing: 0.015em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Time Badge ---- */
+.prayer-time-badge {
+  font-size: 16px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.97);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.22);
+  padding: 6px 11px;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+  flex-shrink: 0;
+  text-shadow: 0 0 14px var(--glow, rgba(255, 255, 255, 0.5));
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.prayer-card-modern:hover .prayer-time-badge {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.25);
+  text-shadow: 0 0 20px var(--glow, rgba(255, 255, 255, 0.8));
+}
+
+/* ---- Next Prayer State ---- */
+.prayer-card-next {
+  z-index: 2;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.prayer-card-next .prayer-card-bg {
+  opacity: 1 !important;
+}
+
+.prayer-card-next .prayer-card-content {
+  padding-bottom: 28px;
+}
+
+.prayer-card-next .prayer-time-badge {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+/* ---- "Berikutnya" Badge ---- */
+.prayer-next-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 14px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9.5px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.prayer-next-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 0 #4ade80;
+  animation: dotRipple 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes dotRipple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+    transform: scale(1);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(74, 222, 128, 0);
+    transform: scale(1.1);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+    transform: scale(1);
+  }
+}
+
+/* ---- Passed Prayer State ---- */
+.prayer-card-passed {
+  opacity: 0.45;
+}
+
+.prayer-card-passed .prayer-card-bg {
+  filter: grayscale(0.5) brightness(0.8);
+}
+
+.prayer-card-passed .prayer-time-badge {
+  text-decoration: line-through;
+  text-decoration-color: rgba(255, 255, 255, 0.5);
+  opacity: 0.75;
+}
+
+/* ---- Responsive Tweaks ---- */
+@media (max-width: 400px) {
+  .prayer-card-content {
+    gap: 9px;
+    padding: 13px 11px;
+  }
+  .prayer-icon-ring {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+  }
+  .prayer-icon-fa {
+    font-size: 17px;
+  }
+  .prayer-name-label {
+    font-size: 12.5px;
+  }
+  .prayer-time-badge {
+    font-size: 14px;
+    padding: 5px 9px;
+  }
+}
+
+@media (min-width: 480px) {
+  #prayer-grid {
+    gap: 14px;
+  }
+  .prayer-card-modern {
+    min-height: 90px;
+  }
+  .prayer-icon-ring {
+    width: 54px;
+    height: 54px;
+    border-radius: 18px;
+  }
+  .prayer-icon-fa {
+    font-size: 22px;
+  }
+  .prayer-name-label {
+    font-size: 14px;
+  }
+  .prayer-time-badge {
+    font-size: 17px;
+    padding: 7px 13px;
+  }
+}

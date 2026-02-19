@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -11,6 +11,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/prayer-cards.css">
+    <link rel="stylesheet" href="styles/new-features.css">
 </head>
 
 <body>
@@ -35,7 +37,8 @@
     <header class="p-6 max-w-2xl mx-auto relative z-10">
         <div class="flex justify-between items-start">
             <div class="fade-in" style="animation-delay: 0.1s;">
-                <p id="greeting" class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-1">SELAMAT PAGI
+                <p id="header-greeting" class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-1">SELAMAT
+                    DATANG
                 </p>
                 <h1 class="text-2xl font-black">
                     <span class="text-gradient-gold">Ramadan</span><span class="text-slate-800">Start</span>
@@ -85,15 +88,19 @@
                     </div>
 
 
-                    <div class="relative mb-6">
+                    <div class="relative mb-3">
                         <div class="absolute inset-0 bg-gradient-to-r from-amber-400/20 to-rose-400/20 blur-3xl"></div>
                         <h2 id="clock"
                             class="clock-display relative z-10 bg-gradient-to-r from-amber-600 via-rose-500 to-amber-600 bg-clip-text text-transparent animate-gradient-x"
                             style="font-size: 3.5rem; font-weight: 900; letter-spacing: -0.05em;">00:00:00</h2>
                     </div>
 
+                    <!-- Date below clock -->
+                    <p id="clock-date" class="text-sm font-semibold text-slate-500 mb-2 tracking-wide">Kamis, 1 Januari
+                        2026</p>
 
-                    <p id="greeting" class="text-xl font-bold text-slate-700 mb-4">SELAMAT PAGI</p>
+                    <!-- Greeting below date, changes dynamically with time -->
+                    <p id="clock-greeting" class="text-xl font-bold uppercase text-slate-700 mb-4">Selamat Pagi</p>
 
 
                     <div class="grid grid-cols-2 gap-3 mb-6">
@@ -312,16 +319,272 @@
                         <i class="fas fa-location-dot text-amber-600"></i>
                         <select id="city-select" class="input-luxury bg-white/50"
                             style="padding-right: 2.5rem; background-position: right 0.75rem center;">
+                            <option value="medan">Medan</option>
                             <option value="jakarta">Jakarta</option>
                             <option value="bandung">Bandung</option>
                             <option value="surabaya">Surabaya</option>
                             <option value="yogyakarta">Yogyakarta</option>
-                            <option value="medan">Medan</option>
                         </select>
                     </div>
                 </div>
                 <div class="grid grid-cols-3 gap-3" id="prayer-grid">
                     <!-- Prayer cards will be rendered here -->
+                </div>
+            </div>
+
+            <!-- ✨ Terbit & Dhuha Card -->
+            <div class="slide-up" style="animation-delay: 0.65s;">
+                <div class="terbit-dhuha-card relative overflow-hidden rounded-3xl p-5">
+                    <!-- Animated background orbs -->
+                    <div class="absolute top-0 right-0 w-40 h-40 rounded-full opacity-20 blur-3xl"
+                        style="background: radial-gradient(circle, #fbbf24, #f59e0b);"></div>
+                    <div class="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-15 blur-3xl"
+                        style="background: radial-gradient(circle, #fb923c, #f97316);"></div>
+
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-8 h-8 rounded-xl flex items-center justify-center"
+                                style="background: linear-gradient(135deg, #fbbf24, #f97316);">
+                                <i class="fas fa-sun text-white text-sm"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-700 text-sm">Waktu Matahari — Medan</h3>
+                            <div class="ml-auto">
+                                <span class="text-xs font-bold px-2 py-1 rounded-full"
+                                    style="background: rgba(251,191,36,0.15); color: #d97706;">Hari Ini</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <!-- Terbit Card -->
+                            <div class="terbit-item-card rounded-2xl p-4 relative overflow-hidden">
+                                <div class="absolute inset-0 opacity-70"
+                                    style="background: linear-gradient(135deg, rgba(251,191,36,0.12) 0%, rgba(249,115,22,0.08) 100%);">
+                                </div>
+                                <div class="relative z-10">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <div class="terbit-icon-wrapper">
+                                            <i class="fas fa-sun terbit-icon"></i>
+                                        </div>
+                                        <span
+                                            class="text-xs font-bold text-amber-700 uppercase tracking-widest">Terbit</span>
+                                    </div>
+                                    <p class="text-2xl font-black text-slate-800 tracking-tight">06<span
+                                            class="text-amber-500">:</span>37</p>
+                                    <p class="text-xs text-slate-500 mt-1">🌅 Fajar Astronomis</p>
+                                </div>
+                            </div>
+
+                            <!-- Dhuha Card -->
+                            <div class="dhuha-item-card rounded-2xl p-4 relative overflow-hidden">
+                                <div class="absolute inset-0 opacity-70"
+                                    style="background: linear-gradient(135deg, rgba(251,146,60,0.12) 0%, rgba(234,179,8,0.08) 100%);">
+                                </div>
+                                <div class="relative z-10">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <div class="dhuha-icon-wrapper">
+                                            <i class="fas fa-cloud-sun dhuha-icon"></i>
+                                        </div>
+                                        <span
+                                            class="text-xs font-bold text-orange-700 uppercase tracking-widest">Dhuha</span>
+                                    </div>
+                                    <p class="text-2xl font-black text-slate-800 tracking-tight">07<span
+                                            class="text-orange-500">:</span>02</p>
+                                    <p class="text-xs text-slate-500 mt-1">🕌 Sholat Sunnah</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dhuha info strip -->
+                        <div class="mt-3 flex items-center gap-2 p-3 rounded-2xl"
+                            style="background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2);">
+                            <i class="fas fa-info-circle text-amber-500 text-sm"></i>
+                            <p class="text-xs text-slate-600">Waktu Dhuha dimulai <strong
+                                    class="text-amber-600">07:02</strong> hingga sebelum <strong
+                                    class="text-amber-600">Adzan Dzuhur</strong> — minimal 2 rakaat</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ⏱️ IFTAR COUNTDOWN CARD -->
+            <div class="slide-up" style="animation-delay: 0.68s;">
+                <div class="iftar-countdown-card relative overflow-hidden rounded-3xl p-6">
+                    <!-- Dark galaxy BG -->
+                    <div class="absolute inset-0" style="background: linear-gradient(135deg, #0f0c29 0%, #1a1a4e 50%, #24243e 100%);"></div>
+                    <!-- Animated nebula blobs -->
+                    <div class="absolute top-0 left-1/4 w-48 h-48 rounded-full opacity-20 blur-3xl" style="background: radial-gradient(circle, #7c3aed, transparent); animation: nebulaFloat1 8s ease-in-out infinite;"></div>
+                    <div class="absolute bottom-0 right-1/4 w-40 h-40 rounded-full opacity-15 blur-3xl" style="background: radial-gradient(circle, #059669, transparent); animation: nebulaFloat2 10s ease-in-out infinite;"></div>
+
+                    <div class="relative z-10">
+                        <!-- Header -->
+                        <div class="flex items-center justify-between mb-5">
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color: rgba(167,139,250,0.8);">⏳ Hitung Mundur</p>
+                                <h3 class="text-lg font-black text-white">Waktu Berbuka Puasa</h3>
+                            </div>
+                            <div class="iftar-icon-pulse">
+                                <i class="fas fa-utensils text-violet-300 text-xl"></i>
+                            </div>
+                        </div>
+
+                        <!-- Countdown Digits -->
+                        <div class="flex items-center justify-center gap-3 mb-5" id="iftar-countdown-row">
+                            <div class="iftar-digit-block">
+                                <div class="iftar-digit" id="iftar-hours">--</div>
+                                <div class="iftar-digit-label">Jam</div>
+                            </div>
+                            <div class="iftar-separator">:</div>
+                            <div class="iftar-digit-block">
+                                <div class="iftar-digit" id="iftar-minutes">--</div>
+                                <div class="iftar-digit-label">Menit</div>
+                            </div>
+                            <div class="iftar-separator">:</div>
+                            <div class="iftar-digit-block">
+                                <div class="iftar-digit" id="iftar-seconds">--</div>
+                                <div class="iftar-digit-label">Detik</div>
+                            </div>
+                        </div>
+
+                        <!-- Progress bar -->
+                        <div class="iftar-progress-track mb-4">
+                            <div class="iftar-progress-fill" id="iftar-progress-fill"></div>
+                            <div class="iftar-progress-glow" id="iftar-progress-glow"></div>
+                        </div>
+
+                        <!-- Bottom status -->
+                        <div class="flex items-center justify-between">
+                            <p class="text-xs font-semibold" style="color: rgba(167,139,250,0.7);">
+                                <i class="fas fa-mosque mr-1"></i>
+                                Maghrib: <span id="iftar-maghrib-time" class="text-violet-300 font-bold">--:--</span>
+                            </p>
+                            <div id="iftar-status-badge" class="iftar-badge">
+                                <span class="iftar-badge-dot"></span>
+                                <span id="iftar-badge-text">Menghitung...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 📖 AYAT AL-QURAN OF THE DAY -->
+            <div class="slide-up" style="animation-delay: 0.72s;">
+                <div class="quran-verse-card relative overflow-hidden rounded-3xl" id="quran-verse-card">
+                    <!-- BG -->
+                    <div class="absolute inset-0" style="background: linear-gradient(135deg, #064e3b 0%, #065f46 40%, #047857 100%);"></div>
+                    <div class="absolute top-0 right-0 w-52 h-52 rounded-full opacity-10 blur-3xl" style="background: radial-gradient(circle, #34d399, transparent); transform: translate(30%,-30%);"></div>
+                    <div class="absolute bottom-0 left-0 w-40 h-40 rounded-full opacity-10 blur-3xl" style="background: radial-gradient(circle, #fbbf24, transparent); transform: translate(-30%,30%);"></div>
+
+                    <!-- Decorative Arabic pattern overlay -->
+                    <div class="absolute inset-0 opacity-5" style="background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 1px, transparent 1px, transparent 12px); background-size: 12px 12px;"></div>
+
+                    <div class="relative z-10 p-6">
+                        <!-- Header -->
+                        <div class="flex items-center justify-between mb-5">
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color: rgba(110,231,183,0.8);">📖 Ayat Pilihan Hari Ini</p>
+                                <h3 class="text-lg font-black text-white">Al-Quran of the Day</h3>
+                            </div>
+                            <button onclick="refreshQuranVerse()" class="quran-refresh-btn" title="Ganti Ayat">
+                                <i class="fas fa-sync-alt" id="quran-refresh-icon"></i>
+                            </button>
+                        </div>
+
+                        <!-- Verse flip container -->
+                        <div class="quran-flip-container" id="quran-flip-container">
+                            <div class="quran-flip-inner" id="quran-flip-inner">
+                                <!-- Arabic text -->
+                                <div class="text-right mb-4">
+                                    <p id="quran-arabic" class="text-2xl leading-relaxed font-bold" style="color: rgba(255,255,255,0.95); font-family: 'Traditional Arabic', 'Scheherazade', serif; text-shadow: 0 0 20px rgba(52,211,153,0.3);">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+                                </div>
+                                <!-- Translation -->
+                                <div class="quran-translation-box">
+                                    <p id="quran-translation" class="text-sm font-semibold italic leading-relaxed" style="color: rgba(255,255,255,0.85);">"Dengan nama Allah Yang Maha Pengasih, Maha Penyayang"</p>
+                                </div>
+                                <!-- Source & number -->
+                                <div class="flex items-center justify-between mt-4">
+                                    <p id="quran-source" class="text-xs font-bold" style="color: rgba(110,231,183,0.8);">QS. Al-Fatihah (1:1)</p>
+                                    <div class="flex gap-1" id="quran-dots">
+                                        <span class="quran-dot active"></span>
+                                        <span class="quran-dot"></span>
+                                        <span class="quran-dot"></span>
+                                        <span class="quran-dot"></span>
+                                        <span class="quran-dot"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🎵 MINI MUROTTAL PLAYER -->
+            <div class="slide-up" style="animation-delay: 0.76s;">
+                <div class="murottal-card relative overflow-hidden rounded-3xl p-5">
+                    <!-- BG -->
+                    <div class="absolute inset-0" style="background: linear-gradient(135deg, #1c1917 0%, #292524 50%, #1c1917 100%);"></div>
+                    <div class="absolute top-0 left-0 w-56 h-56 rounded-full opacity-10 blur-3xl" style="background: radial-gradient(circle, #f59e0b, transparent); transform: translate(-30%,-30%);"></div>
+
+                    <div class="relative z-10">
+                        <!-- Header -->
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color: rgba(251,191,36,0.7);">🎵 Murottal Player</p>
+                                <h3 class="text-base font-black text-white" id="murottal-title">Al-Fatihah — Mishary Rashid</h3>
+                            </div>
+                            <div class="w-10 h-10 rounded-2xl flex items-center justify-center" style="background: rgba(251,191,36,0.15);">
+                                <i class="fas fa-music text-amber-400"></i>
+                            </div>
+                        </div>
+
+                        <!-- Visualizer bars -->
+                        <div class="murottal-visualizer mb-4" id="murottal-visualizer">
+                            <div class="viz-bar" style="--delay:0s;--h:40%"></div>
+                            <div class="viz-bar" style="--delay:0.1s;--h:70%"></div>
+                            <div class="viz-bar" style="--delay:0.15s;--h:55%"></div>
+                            <div class="viz-bar" style="--delay:0.05s;--h:90%"></div>
+                            <div class="viz-bar" style="--delay:0.2s;--h:60%"></div>
+                            <div class="viz-bar" style="--delay:0.08s;--h:80%"></div>
+                            <div class="viz-bar" style="--delay:0.12s;--h:45%"></div>
+                            <div class="viz-bar" style="--delay:0.18s;--h:75%"></div>
+                            <div class="viz-bar" style="--delay:0.03s;--h:50%"></div>
+                            <div class="viz-bar" style="--delay:0.22s;--h:65%"></div>
+                            <div class="viz-bar" style="--delay:0.07s;--h:85%"></div>
+                            <div class="viz-bar" style="--delay:0.14s;--h:35%"></div>
+                            <div class="viz-bar" style="--delay:0.09s;--h:70%"></div>
+                            <div class="viz-bar" style="--delay:0.19s;--h:55%"></div>
+                            <div class="viz-bar" style="--delay:0.06s;--h:90%"></div>
+                            <div class="viz-bar" style="--delay:0.25s;--h:60%"></div>
+                        </div>
+
+                        <!-- Track selector -->
+                        <div class="flex gap-2 mb-4 overflow-x-auto pb-1" id="murottal-tracks" style="scrollbar-width:none;">
+                            <button onclick="selectMurottal(0)" class="murottal-track-btn active" data-idx="0">Al-Fatihah</button>
+                            <button onclick="selectMurottal(1)" class="murottal-track-btn" data-idx="1">Al-Kahfi 1-10</button>
+                            <button onclick="selectMurottal(2)" class="murottal-track-btn" data-idx="2">Ar-Rahman</button>
+                            <button onclick="selectMurottal(3)" class="murottal-track-btn" data-idx="3">Al-Mulk</button>
+                            <button onclick="selectMurottal(4)" class="murottal-track-btn" data-idx="4">Yasin</button>
+                        </div>
+
+                        <!-- Controls -->
+                        <div class="flex items-center justify-between">
+                            <button onclick="prevMurottal()" class="murottal-ctrl-btn">
+                                <i class="fas fa-step-backward"></i>
+                            </button>
+                            <button onclick="toggleMurottal()" class="murottal-play-btn" id="murottal-play-btn">
+                                <i class="fas fa-play" id="murottal-play-icon"></i>
+                            </button>
+                            <button onclick="nextMurottal()" class="murottal-ctrl-btn">
+                                <i class="fas fa-step-forward"></i>
+                            </button>
+                            <div class="murottal-volume-row">
+                                <i class="fas fa-volume-up text-amber-400 text-xs"></i>
+                                <input type="range" id="murottal-volume" min="0" max="100" value="70" class="murottal-volume-slider" oninput="setMurottalVolume(this.value)">
+                            </div>
+                        </div>
+
+                        <!-- hidden audio -->
+                        <audio id="murottal-audio" preload="none"></audio>
+                    </div>
                 </div>
             </div>
 
@@ -367,6 +630,104 @@
                         </p>
                     </div>
                 </div>
+            </div>
+
+            <!-- ✨ NEW: Interactive Ramadan Vibe Card -->
+            <div class="glass-card p-6 slide-up relative overflow-hidden" style="animation-delay: 0.85s;"
+                id="vibe-card">
+                <!-- animated sparkle bg -->
+                <div class="absolute inset-0 opacity-10 pointer-events-none" id="vibe-sparkle-bg"
+                    style="background: radial-gradient(ellipse at 30% 50%, #fbbf24 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, #f43f5e 0%, transparent 60%);">
+                </div>
+
+                <div class="flex items-center justify-between mb-4 relative z-10">
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2">
+                        <i class="fas fa-star text-amber-400 animate-pulse"></i>
+                        Vibe Ramadan Hari Ini
+                    </h3>
+                    <span id="vibe-date-label" class="text-xs text-slate-400 font-medium"></span>
+                </div>
+
+                <!-- Vibe selector -->
+                <div class="flex gap-2 justify-center mb-5 relative z-10" id="vibe-buttons">
+                    <button onclick="selectVibe('🌟','Semangat Membara','from-amber-400 to-orange-500')"
+                        class="vibe-btn flex flex-col items-center gap-1 p-3 rounded-2xl hover:scale-110 transition-all duration-200 cursor-pointer"
+                        data-vibe="semangat" title="Semangat">
+                        <span class="text-3xl">🌟</span>
+                        <span class="text-[10px] font-bold text-slate-500">Semangat</span>
+                    </button>
+                    <button onclick="selectVibe('🤲','Khusyuk & Damai','from-emerald-400 to-teal-500')"
+                        class="vibe-btn flex flex-col items-center gap-1 p-3 rounded-2xl hover:scale-110 transition-all duration-200 cursor-pointer"
+                        data-vibe="khusyuk" title="Khusyuk">
+                        <span class="text-3xl">🤲</span>
+                        <span class="text-[10px] font-bold text-slate-500">Khusyuk</span>
+                    </button>
+                    <button onclick="selectVibe('💪','Kuat Berpuasa','from-blue-400 to-indigo-500')"
+                        class="vibe-btn flex flex-col items-center gap-1 p-3 rounded-2xl hover:scale-110 transition-all duration-200 cursor-pointer"
+                        data-vibe="kuat" title="Kuat">
+                        <span class="text-3xl">💪</span>
+                        <span class="text-[10px] font-bold text-slate-500">Kuat</span>
+                    </button>
+                    <button onclick="selectVibe('😴','Mengantuk Nih','from-violet-400 to-purple-500')"
+                        class="vibe-btn flex flex-col items-center gap-1 p-3 rounded-2xl hover:scale-110 transition-all duration-200 cursor-pointer"
+                        data-vibe="ngantuk" title="Mengantuk">
+                        <span class="text-3xl">😴</span>
+                        <span class="text-[10px] font-bold text-slate-500">Ngantuk</span>
+                    </button>
+                    <button onclick="selectVibe('🙏','Penuh Syukur','from-rose-400 to-pink-500')"
+                        class="vibe-btn flex flex-col items-center gap-1 p-3 rounded-2xl hover:scale-110 transition-all duration-200 cursor-pointer"
+                        data-vibe="syukur" title="Syukur">
+                        <span class="text-3xl">🙏</span>
+                        <span class="text-[10px] font-bold text-slate-500">Syukur</span>
+                    </button>
+                </div>
+
+                <!-- Vibe result display -->
+                <div id="vibe-result" class="hidden relative z-10">
+                    <div id="vibe-result-inner"
+                        class="rounded-2xl p-4 text-center bg-gradient-to-r from-amber-400 to-orange-500 text-white">
+                        <p id="vibe-emoji" class="text-4xl mb-2">🌟</p>
+                        <p id="vibe-label" class="font-black text-lg">Semangat Membara!</p>
+                        <p id="vibe-msg" class="text-sm opacity-90 mt-1">MasyaAllah, semangat kamu menginspirasi!</p>
+                    </div>
+                    <button onclick="resetVibe()"
+                        class="w-full mt-3 text-xs text-slate-400 hover:text-amber-500 transition-colors font-semibold"><i
+                            class="fas fa-redo mr-1"></i>Pilih Lagi</button>
+                </div>
+
+                <!-- Tip of the moment -->
+                <div id="vibe-tip" class="mt-4 p-3 bg-slate-50 rounded-xl relative z-10">
+                    <p class="text-xs text-slate-500"><i class="fas fa-lightbulb text-amber-400 mr-1"></i><span
+                            id="vibe-tip-text">Klik vibe kamu hari ini untuk mendapat pesan khusus! ✨</span></p>
+                </div>
+            </div>
+
+            <!-- ✨ NEW: Ramadan Spin Wheel / Tantangan Acak -->
+            <div class="glass-card p-6 slide-up relative overflow-hidden" style="animation-delay: 0.9s;">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-slate-700 flex items-center gap-2">
+                        <i class="fas fa-dice text-violet-500"></i>
+                        Tantangan Hari Ini
+                    </h3>
+                    <span class="text-xs bg-violet-100 text-violet-600 font-bold px-2 py-1 rounded-full">Acak</span>
+                </div>
+                <div id="challenge-display" class="text-center py-4">
+                    <div class="text-5xl mb-3" id="challenge-icon">🎯</div>
+                    <p id="challenge-text" class="font-bold text-slate-700 text-base mb-1">Tekan untuk mendapat
+                        tantangan!</p>
+                    <p id="challenge-desc" class="text-xs text-slate-500">Tantangan ibadah ringan khusus hari ini.</p>
+                </div>
+                <button onclick="spinChallenge()" id="spin-btn"
+                    class="w-full py-3 bg-gradient-to-r from-violet-500 to-purple-500 text-white font-bold rounded-2xl hover:shadow-lg hover:scale-105 transition-all relative overflow-hidden">
+                    <span class="relative z-10"><i class="fas fa-random mr-2"></i>Acak Tantangan</span>
+                </button>
+                <div id="challenge-done-area" class="mt-3 hidden">
+                    <button onclick="markChallengeDone()"
+                        class="w-full py-2 bg-emerald-500 text-white font-bold rounded-xl text-sm hover:bg-emerald-600 transition-all">
+                        <i class="fas fa-check mr-2"></i>Tandai Selesai!
+                    </button>
+                </div>
+                <p id="challenge-status" class="text-center text-xs text-emerald-500 font-bold mt-2"></p>
             </div>
 
             <!-- Personalized Plan -->
@@ -797,27 +1158,264 @@
 
         <!-- QIBLA SECTION -->
         <section id="section-qibla" class="hidden-section space-y-6">
-            <div class="glass-card glass-card-strong p-6 text-center">
-                <div class="flex justify-center items-center mb-4">
-                    <i class="fas fa-kaaba text-amber-500 text-xl mr-2"></i>
-                    <h3 class="font-bold text-slate-700">Arah Kiblat</h3>
+
+            <!-- Main Compass Card -->
+            <div class="qibla-main-card relative overflow-hidden rounded-3xl p-6">
+                <!-- Animated BG -->
+                <div class="absolute inset-0"
+                    style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #1e3a5f 100%);"></div>
+                <div class="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10"
+                    style="background: radial-gradient(circle, #818cf8, transparent); transform: translate(30%, -30%);">
                 </div>
-                <div id="qibla-compass" class="qibla-compass-container mx-auto my-6">
-                    <div class="compass-dial">
-                        <div class="compass-rose"></div>
-                        <div class="compass-arrow-north"></div>
-                        <div id="qibla-indicator" class="qibla-indicator">
-                            <div class="qibla-indicator-icon">
-                                <i class="fas fa-kaaba"></i>
-                            </div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 rounded-full opacity-10"
+                    style="background: radial-gradient(circle, #34d399, transparent); transform: translate(-30%, 30%);">
+                </div>
+
+                <!-- Stars background dots -->
+                <div class="qibla-stars"></div>
+
+                <div class="relative z-10">
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <p class="text-xs font-bold text-indigo-300 uppercase tracking-widest mb-1">🕌 Penjuru
+                                Kiblat</p>
+                            <h3 class="text-xl font-black text-white">Arah Kiblat</h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center"
+                            style="background: rgba(255,255,255,0.1); backdrop-filter: blur(8px);">
+                            <i class="fas fa-kaaba text-amber-400 text-xl"></i>
                         </div>
                     </div>
+
+                    <!-- SVG Compass -->
+                    <div class="flex justify-center mb-6" id="compass-wrapper">
+                        <div class="compass-outer-ring">
+                            <!-- Outer decorative ring -->
+                            <svg class="compass-svg" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="compassGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="compassRed" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="compassBlue" x1="0%" y1="100%" x2="0%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:0.8" />
+                                        <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.5" />
+                                    </linearGradient>
+                                    <filter id="glowEffect">
+                                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur" />
+                                            <feMergeNode in="SourceGraphic" />
+                                        </feMerge>
+                                    </filter>
+                                    <filter id="kaabaGlow">
+                                        <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur" />
+                                            <feMergeNode in="SourceGraphic" />
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+
+                                <!-- Outer decorative circle -->
+                                <circle cx="140" cy="140" r="135" fill="none" stroke="rgba(255,255,255,0.06)"
+                                    stroke-width="1" />
+                                <circle cx="140" cy="140" r="125" fill="rgba(255,255,255,0.03)"
+                                    stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+
+                                <!-- Tick marks -->
+                                <g id="compass-ticks">
+                                    <!-- Major ticks (every 45°) -->
+                                    <line x1="140" y1="18" x2="140" y2="34" stroke="rgba(255,255,255,0.5)"
+                                        stroke-width="2" transform="rotate(0,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="34" stroke="rgba(255,255,255,0.5)"
+                                        stroke-width="2" transform="rotate(45,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="34" stroke="rgba(255,255,255,0.5)"
+                                        stroke-width="2" transform="rotate(90,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="34" stroke="rgba(255,255,255,0.5)"
+                                        stroke-width="2" transform="rotate(135,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="34" stroke="rgba(255,255,255,0.5)"
+                                        stroke-width="2" transform="rotate(180,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="34" stroke="rgba(255,255,255,0.5)"
+                                        stroke-width="2" transform="rotate(225,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="34" stroke="rgba(255,255,255,0.5)"
+                                        stroke-width="2" transform="rotate(270,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="34" stroke="rgba(255,255,255,0.5)"
+                                        stroke-width="2" transform="rotate(315,140,140)" />
+                                    <!-- Minor ticks (every 15°) -->
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(15,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(30,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(60,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(75,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(105,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(120,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(150,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(165,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(195,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(210,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(240,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(255,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(285,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(300,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(330,140,140)" />
+                                    <line x1="140" y1="18" x2="140" y2="26" stroke="rgba(255,255,255,0.2)"
+                                        stroke-width="1" transform="rotate(345,140,140)" />
+                                </g>
+
+                                <!-- Cardinal labels - rotate with compass dial -->
+                                <g id="compass-dial-group" style="transform-origin: 140px 140px;">
+                                    <text x="140" y="52" text-anchor="middle" fill="#ef4444" font-size="16"
+                                        font-weight="900" font-family="Plus Jakarta Sans, sans-serif"
+                                        filter="url(#glowEffect)">U</text>
+                                    <text x="228" y="147" text-anchor="middle" fill="rgba(255,255,255,0.7)"
+                                        font-size="13" font-weight="700"
+                                        font-family="Plus Jakarta Sans, sans-serif">T</text>
+                                    <text x="140" y="242" text-anchor="middle" fill="rgba(255,255,255,0.7)"
+                                        font-size="13" font-weight="700"
+                                        font-family="Plus Jakarta Sans, sans-serif">S</text>
+                                    <text x="52" y="147" text-anchor="middle" fill="rgba(255,255,255,0.7)"
+                                        font-size="13" font-weight="700"
+                                        font-family="Plus Jakarta Sans, sans-serif">B</text>
+                                </g>
+
+                                <!-- Inner circle (compass face) -->
+                                <circle cx="140" cy="140" r="95" fill="rgba(15,15,40,0.8)"
+                                    stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+
+                                <!-- Inner ring glow -->
+                                <circle cx="140" cy="140" r="94" fill="none" stroke="url(#compassGold)"
+                                    stroke-width="0.5" opacity="0.4" />
+
+                                <!-- Compass Rose Cross lines -->
+                                <line x1="140" y1="55" x2="140" y2="225" stroke="rgba(255,255,255,0.05)"
+                                    stroke-width="1" />
+                                <line x1="55" y1="140" x2="225" y2="140" stroke="rgba(255,255,255,0.05)"
+                                    stroke-width="1" />
+
+                                <!-- Main Needle (North = Red, South = Blue) -->
+                                <!-- This group will be rotated by JS based on qibla angle -->
+                                <g id="compass-needle" style="transform-origin: 140px 140px;">
+                                    <!-- North (red arrow) -->
+                                    <polygon points="140,68 133,140 140,130 147,140" fill="url(#compassRed)"
+                                        filter="url(#glowEffect)" />
+                                    <!-- South (white/muted arrow) -->
+                                    <polygon points="140,212 133,140 140,150 147,140" fill="rgba(148,163,184,0.6)" />
+                                    <!-- Center dot -->
+                                    <circle cx="140" cy="140" r="8" fill="url(#compassGold)"
+                                        stroke="rgba(255,255,255,0.3)" stroke-width="1.5" />
+                                    <circle cx="140" cy="140" r="3" fill="white" />
+                                </g>
+
+                                <!-- Kiblat Indicator Arrow (Gold) -->
+                                <g id="qibla-needle" style="transform-origin: 140px 140px; display:none;">
+                                    <polygon points="140,52 132,140 140,120 148,140" fill="url(#compassGold)"
+                                        filter="url(#kaabaGlow)" opacity="0.9" />
+                                    <circle cx="140" cy="140" r="6" fill="#fbbf24" />
+                                </g>
+
+                                <!-- Kaaba icon at center -->
+                                <text x="140" y="146" text-anchor="middle" font-size="18"
+                                    fill="rgba(255,255,255,0.2)">🕋</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Status text -->
+                    <div class="text-center mb-5">
+                        <p id="qibla-direction-text" class="text-lg font-black text-white mb-1">Mencari lokasi...</p>
+                        <p id="qibla-degree" class="text-sm font-semibold" style="color: rgba(251,191,36,0.9);"></p>
+                    </div>
+
+                    <!-- Alignment indicator -->
+                    <div id="qibla-alignment-bar" class="qibla-align-bar mb-5 hidden">
+                        <div class="flex items-center gap-3 p-3 rounded-2xl"
+                            style="background: rgba(255,255,255,0.06);">
+                            <div id="qibla-align-dot"
+                                class="w-3 h-3 rounded-full bg-slate-500 transition-all duration-300"></div>
+                            <div class="flex-1 h-1.5 rounded-full overflow-hidden"
+                                style="background: rgba(255,255,255,0.1);">
+                                <div id="qibla-align-fill" class="h-full rounded-full transition-all duration-500"
+                                    style="background: linear-gradient(90deg, #ef4444, #fbbf24, #34d399); width: 0%;">
+                                </div>
+                            </div>
+                            <span id="qibla-align-text" class="text-xs font-bold text-slate-400">Memutar...</span>
+                        </div>
+                    </div>
+
+                    <!-- Action button -->
+                    <button onclick="getQiblaDirection()" id="qibla-btn"
+                        class="w-full py-3.5 rounded-2xl font-bold text-sm transition-all duration-300"
+                        style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1e1b4b; box-shadow: 0 8px 24px rgba(251,191,36,0.3);">
+                        <i class="fas fa-location-arrow mr-2"></i> Deteksi Lokasi & Arah Kiblat
+                    </button>
                 </div>
-                <p id="qibla-direction-text" class="text-lg font-bold text-gradient-gold mb-1">Mencari lokasi...</p>
-                <p id="qibla-degree" class="text-sm text-slate-500 mb-4"></p>
-                <button onclick="getQiblaDirection()" class="btn-primary mt-2">
-                    <i class="fas fa-location-arrow mr-2"></i> Kalibrasi Ulang
-                </button>
+            </div>
+
+            <!-- Info Cards -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="glass-card p-4 text-center">
+                    <div class="w-10 h-10 rounded-2xl mx-auto mb-2 flex items-center justify-center"
+                        style="background: linear-gradient(135deg, #fbbf24, #f59e0b);">
+                        <i class="fas fa-compass text-white"></i>
+                    </div>
+                    <p class="text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Ka'bah</p>
+                    <p class="text-base font-black text-slate-800">21.4°N</p>
+                    <p class="text-xs text-slate-500">39.8°E</p>
+                </div>
+                <div class="glass-card p-4 text-center">
+                    <div class="w-10 h-10 rounded-2xl mx-auto mb-2 flex items-center justify-center"
+                        style="background: linear-gradient(135deg, #818cf8, #6366f1);">
+                        <i class="fas fa-mosque text-white"></i>
+                    </div>
+                    <p class="text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Masjidil Haram</p>
+                    <p class="text-base font-black text-slate-800">Makkah</p>
+                    <p class="text-xs text-slate-500">Arab Saudi 🇸🇦</p>
+                </div>
+            </div>
+
+            <!-- Tips Card -->
+            <div class="glass-card p-4">
+                <h4 class="font-bold text-slate-700 mb-3 flex items-center gap-2 text-sm">
+                    <i class="fas fa-lightbulb text-amber-500"></i>
+                    Tips Menggunakan Kompas Kiblat
+                </h4>
+                <div class="space-y-2">
+                    <div class="flex items-start gap-2">
+                        <span class="text-amber-500 text-xs mt-0.5">●</span>
+                        <p class="text-xs text-slate-600">Jauhkan perangkat dari benda logam & magnet untuk akurasi
+                            terbaik</p>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <span class="text-amber-500 text-xs mt-0.5">●</span>
+                        <p class="text-xs text-slate-600">Kalibrasi kompas dengan gerakan angka 8 di udara jika tidak
+                            akurat</p>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <span class="text-amber-500 text-xs mt-0.5">●</span>
+                        <p class="text-xs text-slate-600">Arah kiblat Medan ≈ <strong
+                                class="text-amber-600">292°</strong> (Barat Laut) dari Utara geografis</p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -1247,11 +1845,11 @@
                 <div>
                     <label class="text-sm font-semibold text-slate-600 mb-2 block">Lokasi</label>
                     <select id="user-location" class="input-luxury">
+                        <option value="medan">Medan</option>
                         <option value="jakarta">Jakarta</option>
                         <option value="bandung">Bandung</option>
                         <option value="surabaya">Surabaya</option>
                         <option value="yogyakarta">Yogyakarta</option>
-                        <option value="medan">Medan</option>
                     </select>
                 </div>
                 <div class="flex items-center justify-between py-2">
@@ -1455,6 +2053,5 @@
 
     <script src="js/clock-update.js"></script>
     <script src="js/servers.js"></script>
+    <script src="js/new-features.js"></script>
 </body>
-
-</html>

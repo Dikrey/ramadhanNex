@@ -42,7 +42,6 @@ const prayerTimes = {
     maghrib: "17:59",
     isya: "19:09",
   },
-  
 };
 
 const dailyQuotes = [
@@ -292,7 +291,7 @@ let state = {
   level: 1,
   settings: {
     name: "Pengguna",
-    location: "jakarta",
+    location: "medan",
     prayerNotification: true,
     sahurReminder: true,
     darkMode: false,
@@ -354,12 +353,21 @@ function closePrayerNotification() {
 // ============================================
 window.onload = () => {
   loadState();
+
+  // Sync location: prefer localStorage prayerCity over state (set by city-select / clock-update.js)
+  const savedPrayerCity = localStorage.getItem("prayerCity");
+  if (savedPrayerCity) {
+    state.settings.location = savedPrayerCity;
+  } else {
+    // First time: save default location
+    localStorage.setItem("prayerCity", state.settings.location);
+  }
+
   applyDarkMode(); // Apply dark mode on load
   initializeParticles();
   renderAll();
   checkStreakStatus();
-  updateClock();
-  setInterval(updateClock, 1000);
+  // Note: updateClock() and setInterval are handled by clock-update.js DOMContentLoaded
   initCharts();
 };
 
@@ -797,15 +805,49 @@ function updateClock() {
   const minutes = now.getMinutes();
   const seconds = now.getSeconds();
 
-  document.getElementById("clock").textContent =
-    `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  const clockEl = document.getElementById("clock");
+  if (clockEl) {
+    clockEl.textContent = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }
 
-  // Greeting
-  let greeting = "SELAMAT PAGI";
-  if (hours >= 11 && hours < 15) greeting = "SELAMAT SIANG";
-  else if (hours >= 15 && hours < 18) greeting = "SELAMAT SORE";
-  else if (hours >= 18 || hours < 4) greeting = "SELAMAT MALAM";
-  document.getElementById("greeting").textContent = greeting;
+  // Update date below clock
+  const dateEl = document.getElementById("clock-date");
+  if (dateEl) {
+    const days = [
+      "Minggu",
+      "Senin",
+      "Selasa",
+      "Rabu",
+      "Kamis",
+      "Jumat",
+      "Sabtu",
+    ];
+    const months = [
+      "Januari",
+      "Februari",
+      "Maret",
+      "April",
+      "Mei",
+      "Juni",
+      "Juli",
+      "Agustus",
+      "September",
+      "Oktober",
+      "November",
+      "Desember",
+    ];
+    dateEl.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+  }
+
+  // Update greeting inside clock card (changes with time)
+  const clockGreetingEl = document.getElementById("clock-greeting");
+  if (clockGreetingEl) {
+    let greeting = "Selamat Pagi";
+    if (hours >= 11 && hours < 15) greeting = "Selamat Siang";
+    else if (hours >= 15 && hours < 18) greeting = "Selamat Sore";
+    else if (hours >= 18 || hours < 4) greeting = "Selamat Malam";
+    clockGreetingEl.textContent = greeting;
+  }
 
   // Next prayer
   updateNextPrayer(now);
@@ -2110,7 +2152,8 @@ function closeSettings() {
 function saveSettings() {
   state.settings.name =
     document.getElementById("user-name").value || "Pengguna";
-  state.settings.location = document.getElementById("user-location").value;
+  const newLocation = document.getElementById("user-location").value;
+  state.settings.location = newLocation;
   state.settings.prayerNotification = document.getElementById(
     "prayer-notification",
   ).checked;
@@ -2120,7 +2163,18 @@ function saveSettings() {
 
   saveState();
   applyDarkMode(); // Apply dark mode immediately after saving settings
-  renderPrayerTimes();
+
+  // Sync with clock-update.js prayerCity + localStorage
+  if (typeof currentPrayerCity !== "undefined") {
+    currentPrayerCity = newLocation;
+  }
+  localStorage.setItem("prayerCity", newLocation);
+
+  // Sync city-select dropdown in home section
+  const citySelectEl = document.getElementById("city-select");
+  if (citySelectEl) citySelectEl.value = newLocation;
+
+  renderPrayerTimes(); // Re-render prayer times with new location
   closeSettings();
   showToast("Pengaturan disimpan!", "success");
 }
@@ -2291,26 +2345,66 @@ let deviceHeading = 0;
 function getQiblaDirection() {
   const textEl = document.getElementById("qibla-direction-text");
   const degreeEl = document.getElementById("qibla-degree");
+  const btn = document.getElementById("qibla-btn");
+
+  if (btn) {
+    btn.innerHTML =
+      '<i class="fas fa-spinner fa-spin mr-2"></i> Mendeteksi lokasi...';
+    btn.disabled = true;
+  }
 
   if (navigator.geolocation) {
-    textEl.textContent = "Mengkalibrasi lokasi...";
-    degreeEl.textContent = "";
+    if (textEl) textEl.textContent = "Mengkalibrasi lokasi...";
+    if (degreeEl) degreeEl.textContent = "";
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
         qiblaAngle = calculateQiblaAngle(latitude, longitude);
-        textEl.textContent = "Arahkan perangkat Anda";
-        degreeEl.textContent = `Akurasi: ${qiblaAngle.toFixed(1)}° dari Utara`;
+        if (textEl) textEl.textContent = "Putar perangkat ke arah kiblat";
+        if (degreeEl)
+          degreeEl.textContent = `${qiblaAngle.toFixed(1)}° dari Utara Sejati`;
+
+        // Show qibla needle and rotate it to correct angle
+        const qiblaNeedle = document.getElementById("qibla-needle");
+        if (qiblaNeedle) {
+          qiblaNeedle.style.display = "block";
+          qiblaNeedle.style.transform = `rotate(${qiblaAngle}deg)`;
+        }
+
+        // Show alignment indicator
+        const alignBar = document.getElementById("qibla-alignment-bar");
+        if (alignBar) alignBar.classList.remove("hidden");
+
+        if (btn) {
+          btn.innerHTML =
+            '<i class="fas fa-sync-alt mr-2"></i> Kalibrasi Ulang';
+          btn.disabled = false;
+        }
+
+        showToast(
+          `Kiblat ditemukan: ${qiblaAngle.toFixed(1)}° dari Utara`,
+          "success",
+        );
         checkQiblaSupport();
       },
       (error) => {
-        textEl.textContent = "Gagal Mendapatkan Lokasi";
-        degreeEl.textContent = "Aktifkan izin lokasi & GPS.";
+        if (textEl) textEl.textContent = "Gagal Mendapatkan Lokasi";
+        if (degreeEl) degreeEl.textContent = "Aktifkan izin lokasi & GPS.";
+        if (btn) {
+          btn.innerHTML =
+            '<i class="fas fa-location-arrow mr-2"></i> Coba Lagi';
+          btn.disabled = false;
+        }
         showToast("Gagal mendapatkan lokasi untuk Kiblat.", "error");
       },
     );
   } else {
-    textEl.textContent = "Geolocation Tidak Didukung";
+    if (textEl) textEl.textContent = "Geolocation Tidak Didukung";
+    if (btn) {
+      btn.innerHTML =
+        '<i class="fas fa-location-arrow mr-2"></i> Deteksi Lokasi & Arah Kiblat';
+      btn.disabled = false;
+    }
     showToast("Browser Anda tidak mendukung Geolocation.", "error");
   }
 }
@@ -2331,21 +2425,57 @@ function calculateQiblaAngle(lat, lon) {
 
 function updateCompass(heading) {
   deviceHeading = heading;
-  const dial = document.querySelector(".compass-dial");
-  const indicator = document.getElementById("qibla-indicator");
 
-  if (dial && indicator) {
-    dial.style.transform = `rotate(${-heading}deg)`;
-    indicator.style.transform = `translateX(-50%) rotate(${qiblaAngle}deg)`;
+  // Rotate the compass dial group so N always points to device North
+  const dialGroup = document.getElementById("compass-dial-group");
+  const needle = document.getElementById("compass-needle");
+  const ticks = document.getElementById("compass-ticks");
 
-    const relativeAngle = Math.abs(qiblaAngle - heading) % 360;
-    const normalizedAngle = Math.min(relativeAngle, 360 - relativeAngle);
+  if (dialGroup) dialGroup.style.transform = `rotate(${-heading}deg)`;
+  if (needle) needle.style.transform = `rotate(${-heading}deg)`;
+  if (ticks) ticks.style.transform = `rotate(${-heading}deg)`;
+  if (ticks) ticks.style.transformOrigin = "140px 140px";
 
-    if (normalizedAngle < 5) {
-      indicator.classList.add("aligned");
-    } else {
-      indicator.classList.remove("aligned");
+  // Rotate qibla needle independently to always point to Kiblat
+  const qiblaNeedle = document.getElementById("qibla-needle");
+  if (qiblaNeedle && qiblaAngle !== null) {
+    qiblaNeedle.style.transform = `rotate(${qiblaAngle - heading}deg)`;
+  }
+
+  // Update alignment bar
+  const relativeAngle = Math.abs(qiblaAngle - heading) % 360;
+  const normalizedAngle = Math.min(relativeAngle, 360 - relativeAngle);
+  const alignPercent = Math.max(0, 100 - (normalizedAngle / 5) * 100);
+
+  const alignFill = document.getElementById("qibla-align-fill");
+  const alignDot = document.getElementById("qibla-align-dot");
+  const alignText = document.getElementById("qibla-align-text");
+
+  if (alignFill) alignFill.style.width = alignPercent + "%";
+
+  if (normalizedAngle < 5) {
+    if (alignDot) {
+      alignDot.style.background = "#34d399";
+      alignDot.style.boxShadow = "0 0 8px #34d399";
     }
+    if (alignText) alignText.textContent = "✅ Tepat Kiblat!";
+    if (alignText) alignText.style.color = "#34d399";
+  } else if (normalizedAngle < 15) {
+    if (alignDot) {
+      alignDot.style.background = "#fbbf24";
+      alignDot.style.boxShadow = "0 0 8px #fbbf24";
+    }
+    if (alignText)
+      alignText.textContent = `±${normalizedAngle.toFixed(0)}° Hampir`;
+    if (alignText) alignText.style.color = "#fbbf24";
+  } else {
+    if (alignDot) {
+      alignDot.style.background = "#94a3b8";
+      alignDot.style.boxShadow = "none";
+    }
+    if (alignText)
+      alignText.textContent = `${normalizedAngle.toFixed(0)}° Memutar...`;
+    if (alignText) alignText.style.color = "#94a3b8";
   }
 }
 
@@ -2359,8 +2489,8 @@ function checkQiblaSupport() {
         if (permissionState === "granted") {
           window.addEventListener("deviceorientation", handleOrientation);
         } else {
-          document.getElementById("qibla-degree").textContent =
-            "Izin orientasi perangkat ditolak.";
+          const degEl = document.getElementById("qibla-degree");
+          if (degEl) degEl.textContent = "Izin orientasi perangkat ditolak.";
         }
       })
       .catch(console.error);
@@ -2370,7 +2500,10 @@ function checkQiblaSupport() {
 }
 
 function handleOrientation(event) {
-  const heading = event.webkitCompassHeading || event.alpha;
+  const heading =
+    event.webkitCompassHeading !== undefined
+      ? event.webkitCompassHeading
+      : (360 - (event.alpha || 0)) % 360;
   if (heading !== null) {
     updateCompass(heading);
   }
@@ -3223,5 +3356,274 @@ if (typeof window !== "undefined") {
   window.addEventListener("DOMContentLoaded", () => {
     loadMoneyState();
     updateMoneyUI();
+    initVibeCard();
+    initChallengeCard();
   });
+}
+
+// ============================================
+// VIBE RAMADAN CARD
+// ============================================
+const vibeMessages = {
+  semangat: {
+    msg: "MasyaAllah! Semangat kamu menginspirasi semua orang. Jaga terus yaa! 🔥",
+    tips: "💡 Tip: Mulai hari dengan niat yang kuat. Semangat pagi = produktif seharian!",
+  },
+  khusyuk: {
+    msg: "Subhanallah, khusyuk adalah kunci ibadah yang diterima. Pertahankan! 🤲",
+    tips: "💡 Tip: Dzikir pagi bisa membantu meraih ketenangan sepanjang hari.",
+  },
+  kuat: {
+    msg: "MasyaAllah, kamu luar biasa kuat! Puasa adalah latihan jiwa dan raga. 💪",
+    tips: "💡 Tip: Pastikan sahur bergizi agar energimu terjaga sampai berbuka.",
+  },
+  ngantuk: {
+    msg: "Hehe normal banget kok, sahur dini hari pasti bikin ngantuk. Tetap semangat! 😴",
+    tips: "💡 Tip: Power nap 20 menit setelah dzuhur bisa sangat membantu lho!",
+  },
+  syukur: {
+    msg: "Alhamdulillah, rasa syukur adalah ibadah yang paling indah. Teruskan! 🙏",
+    tips: "💡 Tip: Tulis 3 hal yang kamu syukuri hari ini di journal Ramadan-mu!",
+  },
+};
+
+function initVibeCard() {
+  const today = new Date().toLocaleDateString("id-ID", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const vibeDateEl = document.getElementById("vibe-date-label");
+  if (vibeDateEl) vibeDateEl.textContent = today;
+
+  // Restore today's saved vibe
+  const savedVibe = localStorage.getItem(
+    "ramadan_vibe_" + new Date().toDateString(),
+  );
+  if (savedVibe) {
+    const v = JSON.parse(savedVibe);
+    showVibeResult(v.emoji, v.label, v.gradient, v.key);
+  }
+}
+
+function selectVibe(emoji, label, gradient, key) {
+  // Derive key from vibe-buttons data-vibe if not passed
+  if (!key) {
+    const btns = document.querySelectorAll(".vibe-btn");
+    btns.forEach((btn) => {
+      if (btn.querySelector("span:first-child").textContent === emoji) {
+        key = btn.dataset.vibe;
+      }
+    });
+  }
+  showVibeResult(emoji, label, gradient, key);
+  // Save to localStorage
+  localStorage.setItem(
+    "ramadan_vibe_" + new Date().toDateString(),
+    JSON.stringify({ emoji, label, gradient, key }),
+  );
+}
+
+function showVibeResult(emoji, label, gradient, key) {
+  const vibeResult = document.getElementById("vibe-result");
+  const vibeResultInner = document.getElementById("vibe-result-inner");
+  const vibeEmojiEl = document.getElementById("vibe-emoji");
+  const vibeLabelEl = document.getElementById("vibe-label");
+  const vibeMsgEl = document.getElementById("vibe-msg");
+  const vibeTipEl = document.getElementById("vibe-tip-text");
+  const vibeButtons = document.getElementById("vibe-buttons");
+
+  if (!vibeResult) return;
+
+  if (vibeEmojiEl) vibeEmojiEl.textContent = emoji;
+  if (vibeLabelEl) vibeLabelEl.textContent = label + "!";
+
+  const info = vibeMessages[key] || {
+    msg: "MasyaAllah, terus semangat ibadah ya! ✨",
+    tips: "💡 Tip: Setiap amal ibadah sekecil apapun sangat berarti di bulan Ramadan.",
+  };
+  if (vibeMsgEl) vibeMsgEl.textContent = info.msg;
+  if (vibeTipEl) vibeTipEl.textContent = info.tips;
+
+  // Update gradient
+  if (vibeResultInner) {
+    vibeResultInner.className = `rounded-2xl p-4 text-center bg-gradient-to-r ${gradient} text-white`;
+  }
+
+  // Animate in
+  vibeResult.classList.remove("hidden");
+  vibeResult.style.animation = "none";
+  vibeResult.offsetHeight; // trigger reflow
+  vibeResult.style.animation = "slideUp 0.4s ease-out";
+
+  // Hide buttons with smooth fade
+  if (vibeButtons) {
+    vibeButtons.style.opacity = "0.3";
+    vibeButtons.style.pointerEvents = "none";
+  }
+}
+
+function resetVibe() {
+  const vibeResult = document.getElementById("vibe-result");
+  const vibeButtons = document.getElementById("vibe-buttons");
+  if (vibeResult) vibeResult.classList.add("hidden");
+  if (vibeButtons) {
+    vibeButtons.style.opacity = "1";
+    vibeButtons.style.pointerEvents = "auto";
+  }
+  localStorage.removeItem("ramadan_vibe_" + new Date().toDateString());
+}
+
+// ============================================
+// RANDOM DAILY CHALLENGE
+// ============================================
+const dailyChallenges = [
+  {
+    icon: "📖",
+    text: "Baca 5 halaman Al-Quran setelah Subuh",
+    desc: "Konsisten membaca adalah kunci khatam Ramadan ini!",
+  },
+  {
+    icon: "🤲",
+    text: "Dzikir 100x Subhanallah setelah Ashar",
+    desc: "Lidah yang basah dengan dzikir adalah anugerah besar.",
+  },
+  {
+    icon: "💝",
+    text: "Sedekah hari ini, berapa pun jumlahnya",
+    desc: "Sedekah tidak mengurangi harta, malah melipatgandakannya.",
+  },
+  {
+    icon: "🌙",
+    text: "Sholat Tarawih malam ini full 20 rakaat",
+    desc: "Tarawih adalah salah satu keistimewaan Ramadan yang sayang dilewatkan.",
+  },
+  {
+    icon: "🤲",
+    text: "Berdoa khusus untuk orang tua setelah sholat",
+    desc: "Doa anak sholeh untuk orang tua adalah salah satu amalan terbaik.",
+  },
+  {
+    icon: "📱",
+    text: "Kurangi screen time 50% hari ini",
+    desc: "Gunakan waktu lebih untuk ibadah dan refleksi diri.",
+  },
+  {
+    icon: "🌹",
+    text: "Ucapkan Shalawat 100x kapan saja",
+    desc: "Satu shalawat dibalas 10 kebaikan oleh Allah SWT.",
+  },
+  {
+    icon: "🙏",
+    text: "Minta maaf kepada 1 orang yang pernah disakiti",
+    desc: "Ramadan adalah waktu terbaik untuk memperbaiki hubungan.",
+  },
+  {
+    icon: "💧",
+    text: "Minum 8 gelas air antara Maghrib dan Subuh",
+    desc: "Jaga hidrasi agar ibadah lebih maksimal!",
+  },
+  {
+    icon: "📝",
+    text: "Tulis refleksi journal Ramadan hari ini",
+    desc: "Catat perjalanan spiritualmu, ini kenangan berharga.",
+  },
+  {
+    icon: "🕌",
+    text: "Sholat Dhuha 4 rakaat hari ini",
+    desc: "Sholat Dhuha membuka pintu rezeki yang luas.",
+  },
+  {
+    icon: "🌟",
+    text: "Hafal 1 ayat Al-Quran baru hari ini",
+    desc: "Satu ayat per hari = 30 ayat sepanjang Ramadan!",
+  },
+  {
+    icon: "🍉",
+    text: "Berbuka puasa dengan kurma & air putih dulu",
+    desc: "Ikuti sunnah Nabi: kurma ganjil sebelum makan berat.",
+  },
+  {
+    icon: "👨‍👩‍👧",
+    text: "Buka puasa bersama keluarga hari ini",
+    desc: "Kebersamaan di meja makan adalah momen tak ternilai.",
+  },
+  {
+    icon: "🌅",
+    text: "Bangun 30 menit lebih awal untuk qiyamul lail",
+    desc: "Sepertiga malam terakhir adalah waktu paling mustajab berdoa.",
+  },
+];
+
+function initChallengeCard() {
+  const today = new Date().toDateString();
+  const savedChallenge = localStorage.getItem("ramadan_challenge_" + today);
+  if (savedChallenge) {
+    const c = JSON.parse(savedChallenge);
+    displayChallenge(c, c.done || false);
+  }
+}
+
+function spinChallenge() {
+  const today = new Date().toDateString();
+  const randomIdx = Math.floor(Math.random() * dailyChallenges.length);
+  const challenge = { ...dailyChallenges[randomIdx], done: false };
+
+  localStorage.setItem("ramadan_challenge_" + today, JSON.stringify(challenge));
+  displayChallenge(challenge, false);
+
+  // Spin animation
+  const btn = document.getElementById("spin-btn");
+  if (btn) {
+    btn.style.transform = "scale(0.95)";
+    setTimeout(() => {
+      btn.style.transform = "";
+    }, 200);
+  }
+}
+
+function displayChallenge(challenge, isDone) {
+  const iconEl = document.getElementById("challenge-icon");
+  const textEl = document.getElementById("challenge-text");
+  const descEl = document.getElementById("challenge-desc");
+  const doneArea = document.getElementById("challenge-done-area");
+  const statusEl = document.getElementById("challenge-status");
+
+  if (iconEl) iconEl.textContent = challenge.icon;
+  if (textEl) textEl.textContent = challenge.text;
+  if (descEl) descEl.textContent = challenge.desc;
+
+  if (isDone) {
+    if (doneArea) doneArea.classList.add("hidden");
+    if (statusEl)
+      statusEl.textContent = "✅ Tantangan selesai! MasyaAllah, luar biasa!";
+  } else {
+    if (doneArea) doneArea.classList.remove("hidden");
+    if (statusEl) statusEl.textContent = "";
+  }
+}
+
+function markChallengeDone() {
+  const today = new Date().toDateString();
+  const saved = localStorage.getItem("ramadan_challenge_" + today);
+  if (saved) {
+    const c = JSON.parse(saved);
+    c.done = true;
+    localStorage.setItem("ramadan_challenge_" + today, JSON.stringify(c));
+    displayChallenge(c, true);
+
+    // Confetti!
+    if (typeof confetti !== "undefined") {
+      confetti({
+        particleCount: 80,
+        spread: 60,
+        origin: { y: 0.7 },
+        colors: ["#f59e0b", "#10b981", "#f43f5e"],
+      });
+    }
+
+    showToast("MasyaAllah! Tantangan selesai! 🎉", "success");
+    addXP(20);
+  }
 }

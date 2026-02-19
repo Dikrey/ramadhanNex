@@ -43,6 +43,7 @@ function updateClock() {
   if (clockEl) {
     clockEl.textContent = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
   }
+  
 
   const greetingEl = document.getElementById("greeting");
   if (greetingEl) {
@@ -62,6 +63,7 @@ function updateClock() {
   updateNextPrayer(now);
   updateRamadanProgress(now);
 }
+
 
 function updateRamadanProgress(now) {
   const ramadanStart = new Date(2026, 1, 19); // Feb 19, 2026 (example, from current system date context)
